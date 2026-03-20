@@ -6,8 +6,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter);
-  --font-mono: "Fira Code", "Fira Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+  
+  /* shadcn/ui base tokens */
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -41,93 +41,193 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  
-  /* Violet accent colors */
-  --color-violet-50: oklch(0.97 0.015 285);
-  --color-violet-100: oklch(0.94 0.03 285);
-  --color-violet-200: oklch(0.88 0.06 285);
-  --color-violet-300: oklch(0.78 0.12 285);
-  --color-violet-400: oklch(0.68 0.18 285);
-  --color-violet-500: oklch(0.58 0.22 285);
-  --color-violet-600: oklch(0.50 0.22 285);
-  --color-violet-700: oklch(0.42 0.20 285);
-  --color-violet-800: oklch(0.35 0.17 285);
-  --color-violet-900: oklch(0.28 0.14 285);
 }
 
+/* ============================================
+   IMPECCABLE COLOR & TOKEN SYSTEM
+   Engineering-First | Electric-Green | Zinc-Based
+   ============================================ */
+
 :root {
-  --radius: 0.625rem;
-  --background: oklch(0.995 0 0);
-  --foreground: oklch(0.20 0.01 285);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.20 0.01 285);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.20 0.01 285);
-  --primary: oklch(0.50 0.22 285);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.96 0.01 285);
-  --secondary-foreground: oklch(0.25 0.02 285);
-  --muted: oklch(0.97 0.005 285);
-  --muted-foreground: oklch(0.50 0.02 285);
-  --accent: oklch(0.96 0.02 285);
-  --accent-foreground: oklch(0.30 0.05 285);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.92 0.01 285);
-  --input: oklch(0.92 0.01 285);
-  --ring: oklch(0.50 0.22 285);
-  --chart-1: oklch(0.50 0.22 285);
-  --chart-2: oklch(0.60 0.18 285);
-  --chart-3: oklch(0.70 0.14 285);
-  --chart-4: oklch(0.55 0.20 285);
-  --chart-5: oklch(0.45 0.18 285);
-  --sidebar: oklch(0.99 0 0);
-  --sidebar-foreground: oklch(0.20 0.01 285);
-  --sidebar-primary: oklch(0.50 0.22 285);
-  --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.96 0.02 285);
-  --sidebar-accent-foreground: oklch(0.30 0.05 285);
-  --sidebar-border: oklch(0.92 0.01 285);
-  --sidebar-ring: oklch(0.50 0.22 285);
+  /* Base radius */
+  --radius: 0.75rem;
+
+  /* ========== LIGHT MODE (Minimal use - dark-first) ========== */
+  
+  /* Core surfaces - light */
+  --background: #fafafa; /* Zinc-50 */
+  --foreground: #18181b; /* Zinc-900 */
+  
+  /* Raised surfaces */
+  --surface-raised: #ffffff;
+  --surface-border: #e4e4e7; /* Zinc-200 */
+  
+  /* shadcn/ui compatibility - light mode */
+  --card: #ffffff;
+  --card-foreground: #18181b;
+  --popover: #ffffff;
+  --popover-foreground: #18181b;
+  --secondary: #f4f4f5; /* Zinc-100 */
+  --secondary-foreground: #18181b;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a; /* Zinc-500 */
+  --border: #e4e4e7;
+  --input: #e4e4e7;
+  
+  /* Electric-Green accent system (replaces violet) */
+  --primary: #00ff9f; /* Electric-green */
+  --primary-foreground: #0a0a0a;
+  --accent: #00ff9f;
+  --accent-foreground: #0a0a0a;
+  --ring: #00ff9f;
+  
+  /* Destructive */
+  --destructive: #ef4444; /* Red-500 */
+  --destructive-foreground: #ffffff;
+  
+  /* Charts - green spectrum */
+  --chart-1: #00ff9f;
+  --chart-2: #10b981; /* Emerald-500 */
+  --chart-3: #22c55e; /* Green-500 */
+  --chart-4: #14f195; /* Lighter green */
+  --chart-5: #059669; /* Emerald-600 */
+  
+  /* Sidebar */
+  --sidebar: #ffffff;
+  --sidebar-foreground: #18181b;
+  --sidebar-primary: #00ff9f;
+  --sidebar-primary-foreground: #0a0a0a;
+  --sidebar-accent: #f4f4f5;
+  --sidebar-accent-foreground: #18181b;
+  --sidebar-border: #e4e4e7;
+  --sidebar-ring: #00ff9f;
+
+  /* ========== SEMANTIC PORTFOLIO TOKENS ========== */
+  
+  /* Accent (electric-green) */
+  --accent-primary: #00ff9f;
+  --accent-primary-rgb: 0, 255, 159;
+  --accent-on-primary: #0a0a0a;
+  
+  /* Text hierarchy */
+  --text-primary: #18181b; /* Zinc-900 */
+  --text-secondary: #3f3f46; /* Zinc-700 */
+  --text-tertiary: #71717a; /* Zinc-500 */
+  
+  /* Surfaces */
+  --surface-base: #fafafa; /* Zinc-50 */
+  --surface-elevated: #ffffff;
+  --surface-sunken: #f4f4f5; /* Zinc-100 */
+  
+  /* Borders */
+  --border-primary: #e4e4e7; /* Zinc-200 */
+  --border-strong: #d4d4d8; /* Zinc-300 */
+  --border-accent: #00ff9f;
+  
+  /* Overlays */
+  --overlay-dark: rgba(0, 0, 0, 0.6);
+  --overlay-light: rgba(255, 255, 255, 0.9);
+  
+  /* Interactive states */
+  --state-hover: rgba(0, 255, 159, 0.08);
+  --state-active: rgba(0, 255, 159, 0.16);
+  --state-focus: rgba(0, 255, 159, 0.24);
+
 }
 
 .dark {
-  --background: oklch(0.15 0.01 285);
-  --foreground: oklch(0.95 0.005 285);
-  --card: oklch(0.18 0.012 285);
-  --card-foreground: oklch(0.95 0.005 285);
-  --popover: oklch(0.18 0.012 285);
-  --popover-foreground: oklch(0.95 0.005 285);
-  --primary: oklch(0.65 0.22 285);
-  --primary-foreground: oklch(0.15 0.01 285);
-  --secondary: oklch(0.22 0.015 285);
-  --secondary-foreground: oklch(0.95 0.005 285);
-  --muted: oklch(0.22 0.012 285);
-  --muted-foreground: oklch(0.65 0.01 285);
-  --accent: oklch(0.25 0.03 285);
-  --accent-foreground: oklch(0.95 0.005 285);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(0.28 0.02 285);
-  --input: oklch(0.25 0.018 285);
-  --ring: oklch(0.65 0.22 285);
-  --chart-1: oklch(0.65 0.22 285);
-  --chart-2: oklch(0.70 0.18 285);
-  --chart-3: oklch(0.75 0.14 285);
-  --chart-4: oklch(0.60 0.20 285);
-  --chart-5: oklch(0.55 0.18 285);
-  --sidebar: oklch(0.12 0.01 285);
-  --sidebar-foreground: oklch(0.95 0.005 285);
-  --sidebar-primary: oklch(0.65 0.22 285);
-  --sidebar-primary-foreground: oklch(0.15 0.01 285);
-  --sidebar-accent: oklch(0.22 0.025 285);
-  --sidebar-accent-foreground: oklch(0.95 0.005 285);
-  --sidebar-border: oklch(0.28 0.02 285);
-  --sidebar-ring: oklch(0.65 0.22 285);
+  /* ========== DARK MODE (Primary direction) ========== */
+  
+  /* Core surfaces - Zinc-based black */
+  --background: #0a0a0a; /* Zinc-950 */
+  --foreground: #fafafa; /* Zinc-50 */
+  
+  /* Raised surfaces */
+  --surface-raised: #18181b; /* Zinc-900 */
+  --surface-border: #27272a; /* Zinc-800 */
+  
+  /* shadcn/ui compatibility - dark mode */
+  --card: #18181b;
+  --card-foreground: #fafafa;
+  --popover: #18181b;
+  --popover-foreground: #fafafa;
+  --secondary: #27272a; /* Zinc-800 */
+  --secondary-foreground: #fafafa;
+  --muted: #27272a;
+  --muted-foreground: #a1a1aa; /* Zinc-400 */
+  --border: #27272a;
+  --input: #27272a;
+  
+  /* Electric-Green accent (unchanged in dark) */
+  --primary: #00ff9f;
+  --primary-foreground: #0a0a0a;
+  --accent: #00ff9f;
+  --accent-foreground: #0a0a0a;
+  --ring: #00ff9f;
+  
+  /* Destructive */
+  --destructive: #f87171; /* Red-400 */
+  --destructive-foreground: #0a0a0a;
+  
+  /* Charts - green spectrum */
+  --chart-1: #00ff9f;
+  --chart-2: #34d399; /* Emerald-400 */
+  --chart-3: #4ade80; /* Green-400 */
+  --chart-4: #14f195;
+  --chart-5: #10b981; /* Emerald-500 */
+  
+  /* Sidebar */
+  --sidebar: #0a0a0a;
+  --sidebar-foreground: #fafafa;
+  --sidebar-primary: #00ff9f;
+  --sidebar-primary-foreground: #0a0a0a;
+  --sidebar-accent: #27272a;
+  --sidebar-accent-foreground: #fafafa;
+  --sidebar-border: #27272a;
+  --sidebar-ring: #00ff9f;
+
+  /* ========== SEMANTIC PORTFOLIO TOKENS (DARK) ========== */
+  
+  /* Accent (electric-green - same as light) */
+  --accent-primary: #00ff9f;
+  --accent-primary-rgb: 0, 255, 159;
+  --accent-on-primary: #0a0a0a;
+  
+  /* Text hierarchy */
+  --text-primary: #fafafa; /* Zinc-50 */
+  --text-secondary: #d4d4d8; /* Zinc-300 */
+  --text-tertiary: #a1a1aa; /* Zinc-400 */
+  
+  /* Surfaces */
+  --surface-base: #0a0a0a; /* Zinc-950 */
+  --surface-elevated: #18181b; /* Zinc-900 */
+  --surface-sunken: #09090b; /* Near-black */
+  
+  /* Borders */
+  --border-primary: #27272a; /* Zinc-800 */
+  --border-strong: #3f3f46; /* Zinc-700 */
+  --border-accent: #00ff9f;
+  
+  /* Overlays */
+  --overlay-dark: rgba(0, 0, 0, 0.8);
+  --overlay-light: rgba(255, 255, 255, 0.05);
+  
+  /* Interactive states */
+  --state-hover: rgba(0, 255, 159, 0.08);
+  --state-active: rgba(0, 255, 159, 0.16);
+  --state-focus: rgba(0, 255, 159, 0.24);
+
 }
+
+/* ============================================
+   BASE LAYER
+   ============================================ */
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "cv11", "ss01", "ss03";
@@ -135,21 +235,141 @@
     line-height: 1.6;
     letter-spacing: 0.01em;
   }
+  
   html {
     scroll-behavior: smooth;
   }
 }
 
-/* Typography - Anthropic Claude inspired */
+/* ============================================
+   TYPOGRAPHY SYSTEM
+   Semantic scale replacing hard-coded sizes
+   ============================================ */
+
+/* Headings - Engineering-First hierarchy */
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 500;
-  line-height: 1.3;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+/* Display scale (hero sections) */
+.text-display-lg {
+  font-size: 4.5rem; /* 72px */
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.text-display-md {
+  font-size: 3.5rem; /* 56px */
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.text-display-sm {
+  font-size: 2.75rem; /* 44px */
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Headline scale (section titles) */
+.text-headline-lg {
+  font-size: 2.25rem; /* 36px */
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.text-headline-md {
+  font-size: 1.875rem; /* 30px */
+  line-height: 1.25;
+  font-weight: 600;
   letter-spacing: -0.01em;
 }
 
-/* Monospace font stack for code */
+.text-headline-sm {
+  font-size: 1.5rem; /* 24px */
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Title scale (cards, components) */
+.text-title-lg {
+  font-size: 1.25rem; /* 20px */
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.text-title-md {
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.text-title-sm {
+  font-size: 1rem; /* 16px */
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+/* Body scale */
+.text-body-lg {
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.text-body-md {
+  font-size: 1rem; /* 16px */
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.text-body-sm {
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+/* Label scale (UI elements, badges) */
+.text-label-lg {
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.text-label-md {
+  font-size: 0.8125rem; /* 13px */
+  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.text-label-sm {
+  font-size: 0.75rem; /* 12px */
+  line-height: 1.4;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* Caption scale */
+.text-caption {
+  font-size: 0.75rem; /* 12px */
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--text-tertiary);
+}
+
+/* Monospace */
 code, pre, kbd, samp {
-  font-family: "Fira Code", "Fira Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+  font-family: var(--font-mono), monospace;
   font-feature-settings: "liga" 1, "calt" 1;
   font-size: 0.9em;
   line-height: 1.7;
@@ -158,23 +378,17 @@ code, pre, kbd, samp {
 code {
   padding: 0.125rem 0.375rem;
   border-radius: 0.25rem;
-  background: oklch(0.96 0.01 285);
+  background: var(--surface-sunken);
   font-size: 0.85em;
-}
-
-.dark code {
-  background: oklch(0.25 0.02 285);
+  color: var(--text-primary);
 }
 
 pre {
   padding: 1rem;
   border-radius: 0.5rem;
-  background: oklch(0.97 0.005 285);
+  background: var(--surface-elevated);
+  border: 1px solid var(--border-primary);
   overflow-x: auto;
-}
-
-.dark pre {
-  background: oklch(0.20 0.015 285);
 }
 
 pre code {
@@ -183,15 +397,102 @@ pre code {
   font-size: 0.875em;
 }
 
-/* File paths and CLI commands */
-.font-mono,
-.file-path,
-.cli-command {
-  font-family: "Fira Code", "Fira Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace;
-  font-feature-settings: "liga" 1, "calt" 1;
+/* ============================================
+   COMPONENT LAYER
+   Flat, high-contrast cards (no glassmorphism)
+   ============================================ */
+
+@layer components {
+  /* Page background */
+  .portfolio-page-bg {
+    background: var(--surface-base);
+  }
+  
+  /* Section wrapper */
+  .portfolio-section {
+    isolation: isolate;
+    position: relative;
+  }
+  
+  /* Subtle grid overlay (optional, reduced opacity) */
+  .portfolio-grid-overlay {
+    background-image:
+      linear-gradient(to right, var(--border-primary) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--border-primary) 1px, transparent 1px);
+    background-size: 3rem 3rem;
+    opacity: 0.3;
+  }
+  
+  /* Card system - flat, no glassmorphism */
+  .card-flat {
+    background: var(--surface-base);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius);
+    transition: all 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  
+  .card-elevated {
+    background: var(--surface-elevated);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius);
+    transition: all 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  
+  .card-outlined {
+    background: transparent;
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius);
+    transition: all 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  
+  /* Interactive card states - subtle, no glow */
+  .card-interactive:hover {
+    border-color: var(--border-accent);
+    transform: translateY(-2px);
+  }
+  
+  /* Accent elements */
+  .accent-border {
+    border-color: var(--border-accent);
+  }
+  
+  .accent-bg {
+    background: var(--accent-primary);
+    color: var(--accent-on-primary);
+  }
+  
+  .accent-text {
+    color: var(--accent-primary);
+  }
+  
+  /* State overlays */
+  .state-hover-overlay {
+    background: var(--state-hover);
+  }
+  
+  /* Legacy class compatibility (to be migrated) */
+  .portfolio-glass-card {
+    background: var(--surface-elevated);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius);
+  }
+  
+  .portfolio-glass-interactive {
+    transition: all 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  
+  .portfolio-glass-interactive:hover,
+  .portfolio-glass-interactive:focus-within {
+    border-color: var(--border-accent);
+    transform: translateY(-2px);
+  }
 }
 
-/* Custom scrollbar */
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+/* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -202,37 +503,33 @@ pre code {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: oklch(0.70 0.08 285 / 0.3);
+  background: var(--border-strong);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: oklch(0.70 0.08 285 / 0.5);
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  background: oklch(0.50 0.10 285 / 0.3);
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: oklch(0.50 0.10 285 / 0.5);
+  background: var(--text-tertiary);
 }
 
 /* Selection */
 ::selection {
-  background: oklch(0.65 0.22 285 / 0.3);
-}
-
-.dark ::selection {
-  background: oklch(0.65 0.22 285 / 0.4);
+  background: rgba(var(--accent-primary-rgb), 0.2);
+  color: var(--text-primary);
 }
 
 /* Focus visible */
 :focus-visible {
-  outline: 2px solid oklch(0.50 0.22 285);
+  outline: 2px solid var(--accent-primary);
   outline-offset: 2px;
 }
 
-.dark :focus-visible {
-  outline-color: oklch(0.65 0.22 285);
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

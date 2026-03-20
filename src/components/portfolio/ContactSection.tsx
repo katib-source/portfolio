@@ -1,43 +1,33 @@
 'use client'
 
+import { useState, useEffect, useRef, type FormEvent } from 'react'
 import { motion } from 'framer-motion'
-import { Mail, Github, Linkedin, MapPin, Phone, Send } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { useState } from 'react'
+import { ArrowUpRight, CheckCircle2, Github, Linkedin, Mail, Send } from 'lucide-react'
+import { BentoGrid } from '@/components/ui/bento-grid'
+import { BentoCard, Meta, SectionTag } from '@/components/ui/bento-card'
+import { staggerContainer, transition } from '@/lib/motion'
+import { SectionShell } from './SectionShell'
 
-const contactInfo = [
+type SubmitState = 'idle' | 'submitting' | 'success' | 'error'
+
+const socialLinks = [
   {
-    icon: Mail,
-    label: 'Email',
-    value: 'kachikatib@gmail.com',
-    href: 'mailto:kachikatib@gmail.com',
-  },
-  {
-    icon: Phone,
-    label: 'Phone',
-    value: '+33 7 45 61 27 53',
-    href: 'tel:+33745612753',
+    icon: Github,
+    label: 'GitHub',
+    href: 'https://github.com/katib-source',
+    meta: 'repos',
   },
   {
     icon: Linkedin,
     label: 'LinkedIn',
-    value: 'linkedin.com/in/katib-kachi',
     href: 'https://linkedin.com/in/katib-kachi',
+    meta: 'connect',
   },
   {
-    icon: Github,
-    label: 'GitHub',
-    value: 'github.com/katib-source',
-    href: 'https://github.com/katib-source',
-  },
-  {
-    icon: MapPin,
-    label: 'Location',
-    value: 'Nice, France',
-    href: null,
+    icon: Mail,
+    label: 'Email',
+    href: 'mailto:kachikatib@gmail.com',
+    meta: 'direct',
   },
 ]
 
@@ -45,201 +35,190 @@ export function ContactSection() {
   const [formState, setFormState] = useState({
     name: '',
     email: '',
+    subject: '',
     message: '',
   })
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [submitState, setSubmitState] = useState<SubmitState>('idle')
+  const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    
-    setIsSubmitting(false)
-    setIsSubmitted(true)
-    setFormState({ name: '', email: '', message: '' })
-    
-    // Reset success message after 3 seconds
-    setTimeout(() => setIsSubmitted(false), 3000)
+  useEffect(() => {
+    return () => {
+      if (resetTimerRef.current) {
+        clearTimeout(resetTimerRef.current)
+      }
+    }
+  }, [])
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setSubmitState('submitting')
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 900))
+      setFormState({ name: '', email: '', subject: '', message: '' })
+      setSubmitState('success')
+
+      if (resetTimerRef.current) {
+        clearTimeout(resetTimerRef.current)
+      }
+
+      resetTimerRef.current = setTimeout(() => {
+        setSubmitState('idle')
+      }, 2600)
+    } catch {
+      setSubmitState('error')
+    }
   }
 
   return (
-    <section id="contact" className="py-24 md:py-32 relative bg-muted/30">
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(var(--border))_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--border))_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_30%,transparent_80%)]" />
-      
-      <div className="max-w-6xl mx-auto px-6 relative z-10">
-        {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-4">
-            Contact
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Seeking alternance or internship in Data Science / Intelligence Artificielle.
-            Feel free to reach out for professional inquiries.
-          </p>
-        </motion.div>
+    <SectionShell id="contact" tone="muted" showGrid>
+      <div className="mb-8 space-y-3">
+        <SectionTag id="05" label="Contact" />
+      </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 max-w-4xl mx-auto">
-          {/* Contact Info */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.5 }}
-            className="space-y-6"
-          >
-            <div className="space-y-3">
-              {contactInfo.map((item, index) => (
-                <motion.div
-                  key={item.label}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: '-48px' }}
+      >
+        <BentoGrid gap="md" colsDesktop={12}>
+          <BentoCard span="col-span-12 lg:col-span-5" index={0} className="space-y-6">
+            <Meta prefix="#">get_in_touch</Meta>
+            <h3 className="text-3xl font-light text-zinc-100">Let&apos;s build something real.</h3>
+            <div className="space-y-1 border-t border-zinc-800 pt-3">
+              {socialLinks.map((link) => (
+                <motion.a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center gap-3 border-b border-zinc-800 py-3 text-zinc-300 transition-colors"
+                  whileHover={{ x: 2 }}
+                  transition={transition}
                 >
-                  {item.href ? (
-                    <a
-                      href={item.href}
-                      target={item.href.startsWith('http') ? '_blank' : undefined}
-                      rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                      className="flex items-center gap-4 p-4 rounded-lg border border-border/50 hover:border-primary/30 hover:bg-accent/50 transition-all group"
-                    >
-                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                        <item.icon className="h-5 w-5 text-primary" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">{item.label}</p>
-                        <p className="font-medium group-hover:text-primary transition-colors">{item.value}</p>
-                      </div>
-                    </a>
-                  ) : (
-                    <div className="flex items-center gap-4 p-4 rounded-lg border border-border/50">
-                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                        <item.icon className="h-5 w-5 text-primary" />
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">{item.label}</p>
-                        <p className="font-medium">{item.value}</p>
-                      </div>
-                    </div>
-                  )}
-                </motion.div>
+                  <span className="flex h-7 w-7 items-center justify-center border border-zinc-700 transition-colors group-hover:border-[#00FF9F]">
+                    <link.icon className="h-4 w-4 transition-colors group-hover:text-[#00FF9F]" />
+                  </span>
+                  <span className="flex-1 text-sm">{link.label}</span>
+                  <Meta>{link.meta}</Meta>
+                  <ArrowUpRight className="h-4 w-4 text-zinc-500 transition-colors group-hover:text-[#00FF9F]" />
+                </motion.a>
               ))}
             </div>
+          </BentoCard>
 
-            {/* Availability */}
-            <Card className="border-primary/20 bg-primary/5">
-              <CardContent className="p-6">
-                <div className="flex items-start gap-3">
-                  <div className="relative flex h-3 w-3 mt-1.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
-                  </div>
-                  <div>
-                    <p className="font-medium mb-1">Currently Available</p>
-                    <p className="text-sm text-muted-foreground">
-                      Seeking alternance or internship in Data Science / Intelligence Artificielle. 
-                      Open to opportunities in France and internationally.
-                    </p>
-                  </div>
+          <BentoCard span="col-span-12 lg:col-span-7" index={1} className="space-y-5">
+            <Meta prefix="#">message</Meta>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div className="space-y-2">
+                  <label htmlFor="contact-name">
+                    <Meta>field_name</Meta>
+                  </label>
+                  <input
+                    id="contact-name"
+                    placeholder="your_name"
+                    value={formState.name}
+                    onChange={(event) =>
+                      setFormState((prev) => ({
+                        ...prev,
+                        name: event.target.value,
+                      }))
+                    }
+                    required
+                    className="w-full border border-zinc-800 bg-zinc-900 px-4 py-3 font-mono text-sm text-zinc-200 placeholder:text-zinc-600 focus:border-[#00FF9F]/40 focus:ring-1 focus:ring-[#00FF9F]/40"
+                  />
                 </div>
-              </CardContent>
-            </Card>
-          </motion.div>
 
-          {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <Card className="border-border/50">
-              <CardContent className="p-6">
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="space-y-2">
-                    <label htmlFor="name" className="text-sm font-medium">
-                      Name
-                    </label>
-                    <Input
-                      id="name"
-                      placeholder="Your name"
-                      value={formState.name}
-                      onChange={(e) => setFormState(prev => ({ ...prev, name: e.target.value }))}
-                      required
-                      className="border-border/50 focus:border-primary/50"
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <label htmlFor="email" className="text-sm font-medium">
-                      Email
-                    </label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="your@email.com"
-                      value={formState.email}
-                      onChange={(e) => setFormState(prev => ({ ...prev, email: e.target.value }))}
-                      required
-                      className="border-border/50 focus:border-primary/50"
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <label htmlFor="message" className="text-sm font-medium">
-                      Message
-                    </label>
-                    <Textarea
-                      id="message"
-                      placeholder="Your message..."
-                      value={formState.message}
-                      onChange={(e) => setFormState(prev => ({ ...prev, message: e.target.value }))}
-                      required
-                      rows={5}
-                      className="border-border/50 focus:border-primary/50 resize-none"
-                    />
-                  </div>
-                  
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground gap-2"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <motion.div
-                          animate={{ rotate: 360 }}
-                          transition={{ repeat: Infinity, duration: 1, ease: [0, 0, 1, 1] }}
-                          className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full"
-                        />
-                        Sending...
-                      </>
-                    ) : isSubmitted ? (
-                      <>
-                        Message Sent!
-                      </>
-                    ) : (
-                      <>
-                        <Send className="h-4 w-4" />
-                        Send Message
-                      </>
-                    )}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
-      </div>
-    </section>
+                <div className="space-y-2">
+                  <label htmlFor="contact-email">
+                    <Meta>field_email</Meta>
+                  </label>
+                  <input
+                    id="contact-email"
+                    type="email"
+                    placeholder="name@domain.com"
+                    value={formState.email}
+                    onChange={(event) =>
+                      setFormState((prev) => ({
+                        ...prev,
+                        email: event.target.value,
+                      }))
+                    }
+                    required
+                    className="w-full border border-zinc-800 bg-zinc-900 px-4 py-3 font-mono text-sm text-zinc-200 placeholder:text-zinc-600 focus:border-[#00FF9F]/40 focus:ring-1 focus:ring-[#00FF9F]/40"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="contact-subject">
+                  <Meta>field_subject</Meta>
+                </label>
+                <input
+                  id="contact-subject"
+                  placeholder="internship_opportunity"
+                  value={formState.subject}
+                  onChange={(event) =>
+                    setFormState((prev) => ({
+                      ...prev,
+                      subject: event.target.value,
+                    }))
+                  }
+                  required
+                  className="w-full border border-zinc-800 bg-zinc-900 px-4 py-3 font-mono text-sm text-zinc-200 placeholder:text-zinc-600 focus:border-[#00FF9F]/40 focus:ring-1 focus:ring-[#00FF9F]/40"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="contact-message">
+                  <Meta>field_body</Meta>
+                </label>
+                <textarea
+                  id="contact-message"
+                  placeholder="brief_context_here"
+                  value={formState.message}
+                  onChange={(event) =>
+                    setFormState((prev) => ({
+                      ...prev,
+                      message: event.target.value,
+                    }))
+                  }
+                  required
+                  rows={6}
+                  className="w-full resize-y border border-zinc-800 bg-zinc-900 px-4 py-3 font-mono text-sm text-zinc-200 placeholder:text-zinc-600 focus:border-[#00FF9F]/40 focus:ring-1 focus:ring-[#00FF9F]/40"
+                />
+              </div>
+
+              <motion.button
+                type="submit"
+                disabled={submitState === 'submitting'}
+                className="inline-flex h-11 w-full items-center justify-center gap-2 border border-zinc-700 font-mono text-xs uppercase tracking-[0.16em] text-zinc-200 disabled:cursor-not-allowed disabled:opacity-60"
+                whileHover={{ borderColor: 'rgba(0,255,159,0.5)' }}
+                whileTap={{ scale: 0.98 }}
+                transition={transition}
+              >
+                <Send className="h-4 w-4" />
+                send_message
+              </motion.button>
+
+              <div aria-live="polite" className="min-h-6">
+                {submitState === 'success' && (
+                  <p className="inline-flex items-center gap-2 text-sm text-zinc-300">
+                    <CheckCircle2 className="h-4 w-4 text-[#00FF9F]" />
+                    Message sent.
+                    <Meta>response_time: 24h</Meta>
+                  </p>
+                )}
+                {submitState === 'error' && (
+                  <p className="text-sm text-zinc-400">Send failed. Please email directly: kachikatib@gmail.com</p>
+                )}
+              </div>
+            </form>
+          </BentoCard>
+        </BentoGrid>
+      </motion.div>
+    </SectionShell>
   )
 }

@@ -11,8 +11,8 @@ const config: Config = {
   theme: {
         extend: {
                 fontFamily: {
-                        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
-                        mono: ['"Fira Code"', '"Fira Mono"', 'Menlo', 'Consolas', '"DejaVu Sans Mono"', 'monospace'],
+                        sans: ['var(--font-sans)', 'sans-serif'],
+                        mono: ['var(--font-mono)', 'monospace'],
                 },
                 colors: {
                         background: 'hsl(var(--background))',
