@@ -66,15 +66,19 @@ export function Header() {
 
   return (
     <>
-      <header
-        className={cn(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-          showSolidBg
-            ? 'border-b border-[#DDD8CC]/50 shadow-sm'
-            : 'border-b border-transparent'
-        )}
-        style={{ backgroundColor: showSolidBg ? '#F0EBDF' : 'transparent' }}
-      >
+       <header
+         className={cn(
+           'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+           showSolidBg
+             ? 'border-b border-[#DDD8CC]/50 shadow-sm'
+             : 'border-b border-transparent'
+         )}
+         style={{
+           backgroundColor: showSolidBg ? 'rgba(240, 235, 223, 0.5)' : 'transparent',
+           WebkitBackdropFilter: showSolidBg ? 'blur(16px) saturate(180%)' : 'none',
+           backdropFilter: showSolidBg ? 'blur(16px) saturate(180%)' : 'none',
+         }}
+       >
         <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-6 md:px-12 lg:px-20">
         <button
           onClick={() => scrollToSection('home', () => setIsMobileMenuOpen(false))}
