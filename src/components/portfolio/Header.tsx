@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import { transition } from '@/lib/motion'
 import { cn } from '@/lib/utils'
@@ -30,12 +30,7 @@ export function Header() {
   const showSolidBg = scrolled || isMobileMenuOpen
 
   const handleMobileMenuToggle = () => {
-    if (isMobileMenuOpen) {
-      setIsMobileMenuOpen(false)
-      return
-    }
-
-    setIsMobileMenuOpen(true)
+    setIsMobileMenuOpen((prev) => !prev)
   }
 
   useEffect(() => {
@@ -70,15 +65,17 @@ export function Header() {
   }, [])
 
   return (
-    <header
-      className={cn(
-        'fixed inset-x-0 top-0 z-50 border-b transition-all duration-300',
-        showSolidBg
-          ? 'border-border bg-surface/90 shadow-sm backdrop-blur-sm'
-          : 'border-transparent bg-transparent'
-      )}
-    >
-      <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-6 md:px-12 lg:px-20">
+    <>
+      <header
+        className={cn(
+          'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+          showSolidBg
+            ? 'border-b border-[#DDD8CC]/50 shadow-sm'
+            : 'border-b border-transparent'
+        )}
+        style={{ backgroundColor: showSolidBg ? '#F0EBDF' : 'transparent' }}
+      >
+        <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-6 md:px-12 lg:px-20">
         <button
           onClick={() => scrollToSection('home', () => setIsMobileMenuOpen(false))}
           className="font-logo text-xl font-normal text-[--text-primary]"
@@ -121,55 +118,46 @@ export function Header() {
         >
           {isMobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
         </button>
+        </div>
+      </header>
+
+      <div
+        className={cn(
+          'fixed inset-0 z-30 transition-opacity duration-300 md:hidden',
+          isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        )}
+        style={{ backgroundColor: 'rgba(0,0,0,0.3)' }}
+        onClick={() => setIsMobileMenuOpen(false)}
+      />
+
+      <div
+        className={cn(
+          'fixed top-16 left-0 right-0 bottom-0 z-40 overflow-y-auto border-t border-[--border] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] md:hidden',
+          isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        )}
+        style={{ backgroundColor: '#F0EBDF', opacity: 1 }}
+      >
+        <nav className="flex flex-col">
+          {navItems.map((item) => {
+            const isActive = activeSection === item.id
+
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => scrollToSection(item.id, () => setIsMobileMenuOpen(false))}
+                aria-current={isActive ? 'true' : undefined}
+                className={cn(
+                  'block w-full px-6 py-4 text-left text-base border-b border-[--border] transition-colors',
+                  isActive ? 'text-primary bg-[--primary-light]' : 'text-[--text-primary] active:bg-[--primary-light]'
+                )}
+              >
+                {item.label}
+              </button>
+            )
+          })}
+        </nav>
       </div>
-
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.button
-            key="mobile-backdrop"
-            type="button"
-            aria-label="Close mobile menu overlay"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-30 bg-black/30 md:hidden"
-            onClick={() => setIsMobileMenuOpen(false)}
-          />
-        )}
-
-        {isMobileMenuOpen && (
-          <motion.div
-            key="mobile-menu"
-            initial={{ opacity: 0, x: '100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 top-16 z-40 overflow-y-auto border-t border-[--border] bg-[--surface] md:hidden"
-          >
-            <nav className="flex flex-col">
-              {navItems.map((item) => {
-                const isActive = activeSection === item.id
-
-                return (
-                  <motion.button
-                    key={item.label}
-                    onClick={() => scrollToSection(item.id, () => setIsMobileMenuOpen(false))}
-                    aria-current={isActive ? 'true' : undefined}
-                    className={cn(
-                      'block w-full border-b border-[--border] px-6 py-4 text-left font-sans text-base transition-colors duration-200 active:bg-[--primary-light]',
-                      isActive ? 'bg-[--primary-light] text-primary' : 'text-[--text-primary] hover:bg-[--primary-light]/50'
-                    )}
-                    transition={transition}
-                  >
-                    {item.label}
-                  </motion.button>
-                )
-              })}
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </header>
+    </>
   )
 }
