@@ -29,6 +29,15 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false)
   const showSolidBg = scrolled || isMobileMenuOpen
 
+  const handleMobileMenuToggle = () => {
+    if (isMobileMenuOpen) {
+      setIsMobileMenuOpen(false)
+      return
+    }
+
+    setIsMobileMenuOpen(true)
+  }
+
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50)
     handleScroll()
@@ -103,7 +112,7 @@ export function Header() {
         </nav>
 
         <button
-          onClick={() => setIsMobileMenuOpen((open) => !open)}
+          onClick={handleMobileMenuToggle}
           className={cn(
             'flex h-10 w-10 items-center justify-center rounded-lg border transition-colors duration-300 hover:text-primary md:hidden',
             showSolidBg ? 'border-border text-text-secondary' : 'border-primary/20 text-text-primary'
@@ -116,14 +125,29 @@ export function Header() {
 
       <AnimatePresence>
         {isMobileMenuOpen && (
+          <motion.button
+            key="mobile-backdrop"
+            type="button"
+            aria-label="Close mobile menu overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-30 bg-black/30 md:hidden"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+        )}
+
+        {isMobileMenuOpen && (
           <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={transition}
-            className="fixed right-0 top-16 z-50 h-[calc(100vh-4rem)] w-72 border-l border-[--border] bg-[--surface] p-4 md:hidden"
+            key="mobile-menu"
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-0 top-16 z-40 overflow-y-auto border-t border-[--border] bg-[--surface] md:hidden"
           >
-            <nav className="flex flex-col gap-2">
+            <nav className="flex flex-col">
               {navItems.map((item) => {
                 const isActive = activeSection === item.id
 
@@ -133,9 +157,8 @@ export function Header() {
                     onClick={() => scrollToSection(item.id, () => setIsMobileMenuOpen(false))}
                     aria-current={isActive ? 'true' : undefined}
                     className={cn(
-                      'rounded-lg border border-border px-3 py-2 text-left font-sans text-sm text-text-secondary transition-colors duration-300',
-                      'hover:text-primary',
-                      isActive && 'border-primary text-primary'
+                      'block w-full border-b border-[--border] px-6 py-4 text-left font-sans text-base transition-colors duration-200 active:bg-[--primary-light]',
+                      isActive ? 'bg-[--primary-light] text-primary' : 'text-[--text-primary] hover:bg-[--primary-light]/50'
                     )}
                     transition={transition}
                   >

@@ -55,7 +55,7 @@ export function HeroSection() {
           <motion.p
             variants={fadeUp}
             custom={0}
-            className="font-sans text-sm font-semibold uppercase tracking-[0.12em] text-primary"
+            className="font-sans text-xs font-semibold tracking-[0.08em] text-primary md:text-sm"
           >
             ✦ Portfolio
           </motion.p>
@@ -63,9 +63,9 @@ export function HeroSection() {
           <motion.h1
             variants={fadeUp}
             custom={1}
-            className="font-display text-4xl font-bold tracking-tight text-text-primary md:text-6xl"
+            className="font-display text-3xl font-bold leading-tight text-[--text-primary] md:text-5xl"
           >
-            KATIB KACHI
+            Katib Kachi
           </motion.h1>
 
           <motion.p
