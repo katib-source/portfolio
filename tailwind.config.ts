@@ -14,6 +14,7 @@ const config: Config = {
         display: ["var(--font-display)", "serif"],
         sans: ["var(--font-sans)", "sans-serif"],
         mono: ["var(--font-mono)", "monospace"],
+        logo: ["var(--font-logo)", "cursive"],
       },
       colors: {
         primary: {

@@ -27,6 +27,7 @@ export function Header() {
   const [activeSection, setActiveSection] = useState('home')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const showSolidBg = scrolled || isMobileMenuOpen
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50)
@@ -63,7 +64,7 @@ export function Header() {
     <header
       className={cn(
         'fixed inset-x-0 top-0 z-50 border-b transition-all duration-300',
-        scrolled
+        showSolidBg
           ? 'border-border bg-surface/90 shadow-sm backdrop-blur-sm'
           : 'border-transparent bg-transparent'
       )}
@@ -71,10 +72,11 @@ export function Header() {
       <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-6 md:px-12 lg:px-20">
         <button
           onClick={() => scrollToSection('home', () => setIsMobileMenuOpen(false))}
-          className="font-display text-2xl font-normal tracking-wide text-text-primary"
+          className="font-logo text-xl font-normal text-[--text-primary]"
+          style={{ fontFamily: 'var(--font-logo), cursive' }}
           aria-label="Go to home section"
         >
-          <span className="text-primary">K</span>atib
+          Katib
         </button>
 
         <nav className="hidden items-center gap-6 md:flex">
@@ -88,7 +90,7 @@ export function Header() {
                 aria-current={isActive ? 'true' : undefined}
                 className={cn(
                   'relative border-b-2 border-transparent pb-1 pt-1 font-sans text-sm transition-colors duration-300',
-                  scrolled ? 'text-text-secondary' : 'text-text-primary',
+                  showSolidBg ? 'text-text-secondary' : 'text-text-primary',
                   'hover:text-primary',
                   isActive && 'border-primary text-primary'
                 )}
@@ -104,7 +106,7 @@ export function Header() {
           onClick={() => setIsMobileMenuOpen((open) => !open)}
           className={cn(
             'flex h-10 w-10 items-center justify-center rounded-lg border transition-colors duration-300 hover:text-primary md:hidden',
-            scrolled ? 'border-border text-text-secondary' : 'border-primary/20 text-text-primary'
+            showSolidBg ? 'border-border text-text-secondary' : 'border-primary/20 text-text-primary'
           )}
           aria-label="Toggle mobile menu"
         >
@@ -119,7 +121,7 @@ export function Header() {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={transition}
-            className="fixed right-0 top-16 z-50 h-[calc(100vh-4rem)] w-72 border-l border-border bg-surface-card p-4 md:hidden"
+            className="fixed right-0 top-16 z-50 h-[calc(100vh-4rem)] w-72 border-l border-[--border] bg-[--surface] p-4 md:hidden"
           >
             <nav className="flex flex-col gap-2">
               {navItems.map((item) => {

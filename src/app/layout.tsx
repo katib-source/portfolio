@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono, Outfit, Playfair_Display } from "next/font/google";
+import { JetBrains_Mono, Outfit, Pacifico, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "next-themes";
@@ -19,6 +19,13 @@ const sans = Outfit({
 const mono = JetBrains_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const logo = Pacifico({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-logo",
   display: "swap",
 });
 
@@ -64,7 +71,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${display.variable} ${sans.variable} ${mono.variable} font-sans antialiased`}
+        className={`${display.variable} ${sans.variable} ${mono.variable} ${logo.variable} font-sans antialiased`}
       >
         <ThemeProvider
           attribute="class"
