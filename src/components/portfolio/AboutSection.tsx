@@ -1,25 +1,70 @@
 'use client'
 
-import { Code2, Briefcase, GraduationCap, Languages, MapPin, User } from 'lucide-react'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { BentoGrid } from '@/components/ui/bento-grid'
-import { BentoCard, Meta, SectionTag } from '@/components/ui/bento-card'
-import { staggerContainer } from '@/lib/motion'
+
+import { Badge } from '@/components/ui/Badge'
+import { Card } from '@/components/ui/Card'
+import { SectionHeader } from '@/components/ui/SectionHeader'
+import { fadeUp, staggerContainer } from '@/lib/motion'
 import { SectionShell } from './SectionShell'
 
-const stack = ['TypeScript', 'Python', 'React', 'Next.js', 'Node.js', 'SQL', 'Pandas', 'Scikit-learn']
+const technicalSkills = [
+  {
+    label: 'Langages',
+    values: ['Python', 'JavaScript/TypeScript', 'Java', 'C', 'SQL', 'HTML/CSS'],
+  },
+  {
+    label: 'Data/IA',
+    values: ['pandas', 'NumPy', 'scikit-learn', 'CatBoost', 'PyTorch'],
+  },
+  {
+    label: 'Frameworks/Web',
+    values: ['React', 'Next.js', 'Node.js'],
+  },
+  {
+    label: 'Outils',
+    values: ['Git', 'GitHub', 'Linux', 'Bash', 'Docker'],
+  },
+  {
+    label: 'Bases de donnees',
+    values: ['PostgreSQL', 'MongoDB'],
+  },
+]
+
+const relationalSkills = [
+  'Autonomie',
+  'Rigueur',
+  'Curiosite active',
+  "Esprit d'analyse",
+  'Communication',
+  'Travail en equipe',
+]
 
 const languageLevels = [
-  { name: 'Arabic', level: 'native' },
-  { name: 'French', level: 'c1' },
-  { name: 'English', level: 'c1' },
+  { name: 'Francais', level: 'Courant', progress: 90 },
+  { name: 'Anglais', level: 'Courant', progress: 88 },
+  { name: 'Arabe', level: 'Langue natale', progress: 100 },
+]
+
+const education = [
+  {
+    school: "Universite Cote d'Azur - Nice",
+    degree: 'L3 Informatique',
+    year: '2026',
+  },
+  {
+    school: 'ESI-SBA - Algerie',
+    degree: 'Classe Preparatoire',
+    year: '2022-2024',
+  },
 ]
 
 export function AboutSection() {
   return (
-    <SectionShell id="about" tone="muted" showGrid>
-      <div className="mb-8 space-y-3">
-        <SectionTag id="01" label="About" />
+    <SectionShell id="about" className="bg-surface py-20 md:py-24" contentClassName="max-w-[1200px]">
+      <div className="mb-8">
+        <SectionHeader title="About" id="about-heading" />
       </div>
 
       <motion.div
@@ -27,121 +72,122 @@ export function AboutSection() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: '-48px' }}
+        className="space-y-6"
       >
-        <BentoGrid gap="sm" className="grid-cols-1 md:grid-cols-2 lg:grid-cols-12 lg:gap-6">
-          <BentoCard span="col-span-1 md:col-span-2 lg:col-span-8" index={0} className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div className="flex h-7 w-7 items-center justify-center border border-zinc-700">
-                <User className="h-4 w-4 text-zinc-400" />
+        <div className="grid gap-6 lg:grid-cols-12">
+          <motion.div variants={fadeUp} custom={0} className="space-y-6 lg:col-span-5">
+            <Card>
+              <div className="overflow-hidden rounded-lg border border-border bg-surface-white">
+                <Image
+                  src="/katib.png"
+                  alt="Portrait de Katib Kachi"
+                  width={520}
+                  height={520}
+                  className="h-full w-full object-cover"
+                />
               </div>
-              <Meta prefix="#">bio</Meta>
-            </div>
-            <h3 className="max-w-2xl text-2xl font-light text-zinc-100">
-              Engineer who ships products, not just prototypes.
-            </h3>
-            <p className="max-w-3xl text-sm leading-relaxed text-zinc-400">
-              I build practical AI and data products from raw datasets to user-facing features. My focus is
-              production reliability, measurable impact, and clear delivery in collaborative teams.
-            </p>
-            <div className="flex flex-wrap items-center gap-4 border-t border-zinc-800 pt-4">
-              <span className="inline-flex items-center gap-2 text-zinc-400">
-                <MapPin className="h-4 w-4" />
-                <Meta>Nice, France</Meta>
-              </span>
-              <span className="inline-flex items-center gap-2 text-zinc-400">
-                <GraduationCap className="h-4 w-4" />
-                <Meta>Computer Science, UCA</Meta>
-              </span>
-            </div>
-          </BentoCard>
+            </Card>
 
-          <BentoCard span="col-span-1 md:col-span-2 lg:col-span-4" index={1} className="space-y-5">
-            <div className="flex items-center justify-between">
-              <div className="flex h-7 w-7 items-center justify-center border border-zinc-700">
-                <Briefcase className="h-4 w-4 text-zinc-400" />
+            <Card>
+              <h3 className="mb-5 font-sans text-base font-semibold text-primary">Education</h3>
+              <div className="space-y-6">
+                {education.map((item, index) => (
+                  <div key={item.school} className="relative pl-7">
+                    {index < education.length - 1 && (
+                      <span className="absolute left-[7px] top-5 h-[calc(100%+18px)] w-px bg-primary-light" />
+                    )}
+                    <span className="absolute left-0 top-1.5 h-4 w-4 rounded-full border-2 border-primary bg-surface" />
+                    <p className="font-sans text-sm font-semibold text-text-primary">{item.school}</p>
+                    <p className="mt-1 font-sans text-sm text-text-secondary">{item.degree}</p>
+                    <p className="mt-1 font-sans text-sm text-text-muted">{item.year}</p>
+                  </div>
+                ))}
               </div>
-              <Meta prefix="#">status</Meta>
-            </div>
-            <div className="space-y-3 text-xs">
-              <div className="flex items-center justify-between gap-4 border-b border-zinc-800 pb-2">
-                <Meta>availability</Meta>
-                <span className="inline-flex items-center gap-2 text-zinc-200">
-                  <span className="h-2 w-2 animate-pulse rounded-full bg-[#00FF9F]" />
-                  Open
-                </span>
-              </div>
-              <div className="flex items-center justify-between gap-4 border-b border-zinc-800 pb-2">
-                <Meta>focus</Meta>
-                <span className="text-right text-zinc-300">AI Engineering</span>
-              </div>
-              <div className="flex items-center justify-between gap-4 border-b border-zinc-800 pb-2">
-                <Meta>looking_for</Meta>
-                <span className="text-right text-zinc-300">Internship / Alternance</span>
-              </div>
-              <div className="flex items-center justify-between gap-4">
-                <Meta>location</Meta>
-                <span className="text-right text-zinc-300">France / Remote</span>
-              </div>
-            </div>
-          </BentoCard>
+            </Card>
+          </motion.div>
 
-          <BentoCard span="col-span-1 md:col-span-1 lg:col-span-4" index={2} className="space-y-5">
-            <div className="flex items-center justify-between">
-              <div className="flex h-7 w-7 items-center justify-center border border-zinc-700">
-                <GraduationCap className="h-4 w-4 text-zinc-400" />
-              </div>
-              <Meta prefix="#">education</Meta>
-            </div>
-            <div className="space-y-4 border-l border-zinc-800 pl-4">
-              <div className="space-y-1">
-                <p className="text-sm text-zinc-200">Universite Cote d&apos;Azur</p>
-                <Meta>computer_science</Meta>
-                <Meta>2022 - present</Meta>
-              </div>
-              <div className="space-y-1">
-                <p className="text-sm text-zinc-200">Data and AI Track</p>
-                <Meta>ml_systems</Meta>
-                <Meta>specialization</Meta>
-              </div>
-            </div>
-          </BentoCard>
-
-          <BentoCard span="col-span-1 md:col-span-1 lg:col-span-4" index={3} className="space-y-5">
-            <div className="flex items-center justify-between">
-              <div className="flex h-7 w-7 items-center justify-center border border-zinc-700">
-                <Code2 className="h-4 w-4 text-zinc-400" />
-              </div>
-              <Meta prefix="#">stack</Meta>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {stack.map((skill) => (
-                <span
-                  key={skill}
-                  className="border border-zinc-800 bg-zinc-900 px-2.5 py-1 font-mono text-[11px] text-zinc-300"
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </BentoCard>
-
-          <BentoCard span="col-span-1 md:col-span-2 lg:col-span-4" index={4} className="space-y-5">
-            <div className="flex items-center justify-between">
-              <div className="flex h-7 w-7 items-center justify-center border border-zinc-700">
-                <Languages className="h-4 w-4 text-zinc-400" />
-              </div>
-              <Meta prefix="#">languages</Meta>
-            </div>
-            <div className="space-y-3">
-              {languageLevels.map((language) => (
-                <div key={language.name} className="flex items-center justify-between border-b border-zinc-800 pb-2">
-                  <span className="text-sm text-zinc-200">{language.name}</span>
-                  <Meta>{language.level}</Meta>
+          <motion.div variants={fadeUp} custom={1} className="space-y-6 lg:col-span-7">
+            <Card>
+              <div className="space-y-4">
+                <h3 className="font-sans text-base font-semibold text-primary">A propos</h3>
+                <p className="font-sans text-base leading-relaxed text-text-secondary">
+                  Etudiant en L3 Informatique a l&apos;Universite Cote d&apos;Azur, je construis des solutions data et IA
+                  utiles, de la preparation des donnees jusqu&apos;a la mise en oeuvre applicative. Mon objectif est de
+                  rejoindre une equipe qui valorise la rigueur technique, la collaboration et l&apos;impact concret.
+                </p>
+                <div className="grid gap-3 pt-1 sm:grid-cols-2">
+                  <div className="rounded-lg border border-border bg-surface-white px-4 py-3">
+                    <p className="font-sans text-xs uppercase tracking-[0.08em] text-text-muted">Statut actuel</p>
+                    <p className="mt-1 font-sans text-sm font-semibold text-primary">
+                      Recherche alternance en Data Science / IA
+                    </p>
+                  </div>
+                  <div className="rounded-lg border border-border bg-surface-white px-4 py-3">
+                    <p className="font-sans text-xs uppercase tracking-[0.08em] text-text-muted">Localisation</p>
+                    <p className="mt-1 font-sans text-sm font-semibold text-text-primary">Nice, France</p>
+                  </div>
                 </div>
-              ))}
-            </div>
-          </BentoCard>
-        </BentoGrid>
+              </div>
+            </Card>
+          </motion.div>
+        </div>
+
+        <motion.div variants={fadeUp} custom={2} className="grid gap-6 lg:grid-cols-12">
+          <div className="lg:col-span-7">
+            <Card>
+              <h3 className="mb-5 font-sans text-base font-semibold text-primary">Competences Techniques</h3>
+              <div className="space-y-4">
+                {technicalSkills.map((group) => (
+                  <div key={group.label}>
+                    <p className="mb-2 font-sans text-sm font-semibold text-primary">{group.label}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {group.values.map((skill) => (
+                        <Badge key={`${group.label}-${skill}`}>{skill}</Badge>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          </div>
+
+          <div className="space-y-6 lg:col-span-5">
+            <Card>
+              <h3 className="mb-4 font-sans text-base font-semibold text-primary">Competences Relationnelles</h3>
+              <div className="flex flex-wrap gap-2">
+                {relationalSkills.map((skill) => (
+                  <span
+                    key={skill}
+                    className="rounded-full border border-border bg-surface-white px-3 py-1 font-sans text-xs text-text-secondary"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </Card>
+
+            <Card>
+              <h3 className="mb-4 font-sans text-base font-semibold text-primary">Langues</h3>
+              <div className="space-y-4">
+                {languageLevels.map((language) => (
+                  <div key={language.name} className="space-y-1.5">
+                    <div className="flex items-center justify-between font-sans text-sm">
+                      <span className="text-text-primary">{language.name}</span>
+                      <span className="text-text-muted">{language.level}</span>
+                    </div>
+                    <div className="h-2 overflow-hidden rounded-full bg-primary-light">
+                      <div
+                        className="h-full rounded-full bg-primary"
+                        style={{ width: `${language.progress}%` }}
+                        aria-hidden="true"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          </div>
+        </motion.div>
       </motion.div>
     </SectionShell>
   )

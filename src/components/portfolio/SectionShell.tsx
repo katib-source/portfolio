@@ -5,8 +5,8 @@ type SectionTone = 'default' | 'muted' | 'accent'
 
 const toneClasses: Record<SectionTone, string> = {
   default: '',
-  muted: 'bg-[#050505]',
-  accent: 'bg-[#050505]',
+  muted: 'bg-surface',
+  accent: 'bg-primary-light',
 }
 
 export type SectionShellProps = {

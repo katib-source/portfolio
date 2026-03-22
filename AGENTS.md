@@ -15,10 +15,10 @@ Operational guide for coding agents working in this repository.
 
 - Read `CLAUDE.md` first for design and UX priorities.
 - Key design requirements from `CLAUDE.md`:
-  - dark-first premium aesthetic inspired by Vercel/Linear
-  - strong hierarchy and recruiter scanability
+  - professional editorial aesthetic aligned with CV visual identity
+  - warm ivory surfaces with monochromatic navy accent only
+  - clean, subtle card system with warm-toned borders and rounded corners
   - restrained, purposeful motion only
-  - WCAG AA contrast in dark and light modes
   - certificates treated as credibility assets, not decoration
 - Treat this file as implementation guidance for agents.
 
@@ -108,11 +108,44 @@ Operational guide for coding agents working in this repository.
 - Reuse shared UI primitives from `src/components/ui/` when possible.
 - Prefer semantic CSS variables/tokens over repeated hard-coded values.
 - Put cross-section visual tokens in `src/app/globals.css`.
-- Primary accent color is electric-green `#00FF9F` (`--portfolio-accent`).
-- Keep dark mode and light mode both polished; dark mode is primary direction.
-- Keep spacing and typography deliberate and consistent.
-- Avoid generic template-looking patterns.
-- Maintain visual hierarchy optimized for recruiter scanability.
+- Design language: professional editorial.
+- Use warm ivory surfaces only:
+  - page: `#F0EBDF`
+  - cards: `#F6F2E8`
+  - elevated: `#FDFCF8`
+- Use monochromatic navy accents only:
+  - primary: `#3E5F9D`
+  - light: `#E8EDF5`
+  - dark: `#2D4672`
+- Navy is the only accent family; do not introduce secondary accents.
+- Use subtle rounded corners (`rounded-lg`, ~8-12px) and warm borders (`#DDD8CC`).
+- Maintain professional density with balanced whitespace.
+- Critical: no cool grays anywhere; avoid Tailwind `zinc`, `slate`, and `gray` classes.
+- Typography system:
+  - hero/name: Playfair Display (serif), bold
+  - section headers: Outfit (or DM Sans), semibold, navy
+  - body: same sans, regular, `#1A1A2E`
+  - metadata/dates: same sans, `#7A7A8A`
+  - code/tech: JetBrains Mono, 12px
+- Section headers:
+  - prefix with `✦` in navy
+  - title in uppercase or title case in navy
+  - include subtle underline/bottom border
+- Card styling:
+  - background `#F6F2E8` (or `#FDFCF8` for elevated)
+  - border `1px solid #DDD8CC`
+  - `rounded-lg` radius
+  - `shadow-sm` on hover only
+  - no dark surfaces, no glassmorphism, no cool gray borders
+- Motion constraints:
+  - duration `0.3`
+  - ease `[0.16, 1, 0.3, 1]`
+  - stagger `0.05`
+  - use fade-up entrances and subtle hover lifts; avoid aggressive scale transforms
+- Icons:
+  - use `lucide-react`
+  - style with navy or muted token colors
+  - no 1px framed icon containers; optional soft navy/cream circles only
 
 ## 10) Motion and Interaction Rules
 
@@ -157,7 +190,7 @@ Operational guide for coding agents working in this repository.
 
 - Run `npm run lint`.
 - Run `npm run build`.
-- Verify changed sections in both dark and light theme.
+- Verify changed sections preserve the warm ivory + navy identity.
 - Verify mobile and desktop layouts.
 - Confirm nav anchors still scroll to correct sections.
 - Confirm added assets exist under `public/` and paths resolve.

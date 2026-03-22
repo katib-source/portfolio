@@ -9,59 +9,36 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-        extend: {
-                fontFamily: {
-                        sans: ['var(--font-sans)', 'sans-serif'],
-                        mono: ['var(--font-mono)', 'monospace'],
-                },
-                colors: {
-                        background: 'hsl(var(--background))',
-                        foreground: 'hsl(var(--foreground))',
-                        card: {
-                                DEFAULT: 'hsl(var(--card))',
-                                foreground: 'hsl(var(--card-foreground))'
-                        },
-                        popover: {
-                                DEFAULT: 'hsl(var(--popover))',
-                                foreground: 'hsl(var(--popover-foreground))'
-                        },
-                        primary: {
-                                DEFAULT: 'hsl(var(--primary))',
-                                foreground: 'hsl(var(--primary-foreground))'
-                        },
-                        secondary: {
-                                DEFAULT: 'hsl(var(--secondary))',
-                                foreground: 'hsl(var(--secondary-foreground))'
-                        },
-                        muted: {
-                                DEFAULT: 'hsl(var(--muted))',
-                                foreground: 'hsl(var(--muted-foreground))'
-                        },
-                        accent: {
-                                DEFAULT: 'hsl(var(--accent))',
-                                foreground: 'hsl(var(--accent-foreground))'
-                        },
-                        destructive: {
-                                DEFAULT: 'hsl(var(--destructive))',
-                                foreground: 'hsl(var(--destructive-foreground))'
-                        },
-                        border: 'hsl(var(--border))',
-                        input: 'hsl(var(--input))',
-                        ring: 'hsl(var(--ring))',
-                        chart: {
-                                '1': 'hsl(var(--chart-1))',
-                                '2': 'hsl(var(--chart-2))',
-                                '3': 'hsl(var(--chart-3))',
-                                '4': 'hsl(var(--chart-4))',
-                                '5': 'hsl(var(--chart-5))'
-                        }
-                },
-                borderRadius: {
-                        lg: 'var(--radius)',
-                        md: 'calc(var(--radius) - 2px)',
-                        sm: 'calc(var(--radius) - 4px)'
-                }
-        }
+    extend: {
+      fontFamily: {
+        display: ["var(--font-display)", "serif"],
+        sans: ["var(--font-sans)", "sans-serif"],
+        mono: ["var(--font-mono)", "monospace"],
+      },
+      colors: {
+        primary: {
+          DEFAULT: "#3E5F9D",
+          light: "#E8EDF5",
+          dark: "#2D4672",
+        },
+        text: {
+          primary: "#1A1A2E",
+          secondary: "#4A4A5A",
+          muted: "#7A7A8A",
+        },
+        surface: {
+          DEFAULT: "#F0EBDF",
+          card: "#F6F2E8",
+          white: "#FDFCF8",
+        },
+        border: "#DDD8CC",
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
+    },
   },
   plugins: [tailwindcssAnimate],
 };

@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, JetBrains_Mono } from "next/font/google";
+import { JetBrains_Mono, Outfit, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "next-themes";
 
-const sans = Geist({
+const display = Playfair_Display({
+  variable: "--font-display",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const sans = Outfit({
   variable: "--font-sans",
   subsets: ["latin"],
   display: "swap",
@@ -17,22 +23,36 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Katib Kachi | Computer Science Portfolio",
-  description: "L3 Computer Science student at Université Côte d'Azur specializing in AI, Data Science, and Machine Learning. Seeking alternance or internship opportunities.",
-  keywords: ["Computer Science", "Artificial Intelligence", "Data Science", "Machine Learning", "Université Côte d'Azur", "Alternance", "Internship"],
+  metadataBase: new URL("https://www.katib.me"),
+  title: "Katib Kachi — Data Science & IA | Alternance",
+  description:
+    "Etudiant en L3 Informatique a l'Universite Cote d'Azur, je construis des solutions data et IA utiles, de la preparation des donnees jusqu'a la mise en oeuvre applicative.",
+  keywords: ["Data Science", "IA", "Machine Learning", "Universite Cote d'Azur", "Alternance", "Portfolio"],
   authors: [{ name: "Katib Kachi" }],
   icons: {
-    icon: "/logo.svg",
+    icon: "/icon.svg",
   },
   openGraph: {
-    title: "Katib Kachi | Computer Science Portfolio",
-    description: "L3 Computer Science student at Université Côte d'Azur specializing in AI, Data Science, and Machine Learning.",
+    title: "Katib Kachi — Data Science & IA | Alternance",
+    description:
+      "Etudiant en L3 Informatique a l'Universite Cote d'Azur, je construis des solutions data et IA utiles, de la preparation des donnees jusqu'a la mise en oeuvre applicative.",
     type: "website",
+    url: "https://www.katib.me",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Katib Kachi — Data Science & IA | Alternance",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Katib Kachi | Computer Science Portfolio",
-    description: "L3 Computer Science student at Université Côte d'Azur specializing in AI, Data Science, and Machine Learning.",
+    title: "Katib Kachi — Data Science & IA | Alternance",
+    description:
+      "Etudiant en L3 Informatique a l'Universite Cote d'Azur, je construis des solutions data et IA utiles, de la preparation des donnees jusqu'a la mise en oeuvre applicative.",
+    images: ["/opengraph-image"],
   },
 };
 
@@ -44,7 +64,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${sans.variable} ${mono.variable} font-sans antialiased bg-background text-foreground`}
+        className={`${display.variable} ${sans.variable} ${mono.variable} font-sans antialiased`}
       >
         <ThemeProvider
           attribute="class"

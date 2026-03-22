@@ -1,199 +1,218 @@
 'use client'
 
-import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowUpRight, Github } from 'lucide-react'
-import { BentoGrid, BentoGridItem } from '@/components/ui/bento-grid'
-import { BentoCard, Meta, SectionTag } from '@/components/ui/bento-card'
+import { ArrowUpRight } from 'lucide-react'
+
+import { Badge } from '@/components/ui/Badge'
+import { Card } from '@/components/ui/Card'
+import { SectionHeader } from '@/components/ui/SectionHeader'
 import { fadeUp, staggerContainer } from '@/lib/motion'
-import { ProjectDetailModal, type ProjectData } from './ProjectDetailModal'
 import { SectionShell } from './SectionShell'
 
-const projectsData: ProjectData[] = [
+type Project = {
+  id: string
+  title: string
+  description: string
+  stack: string[]
+  status?: 'Deploye' | 'En cours'
+  link?: string
+  linkLabel?: string
+  metricLabel?: string
+  metricValue?: string
+  featured?: boolean
+}
+
+const projects: Project[] = [
   {
-    id: 'hotel-cancellation-prediction',
-    title: 'Hotel Booking Cancellation Prediction',
-    subtitle: 'Applied ML for operational decision support',
+    id: 'project-ml-hotel',
+    title: 'ML Hotel Cancellation Prediction',
     description:
-      'CatBoost pipeline for cancellation risk scoring with interpretable features and actionable confidence outputs.',
-    features: [
-      'Feature engineering around lead time, deposits, and market segments',
-      'Threshold tuning for practical business recall targets',
-      'Interpretability layer for staff decision confidence',
-    ],
+      'Modele de prediction des annulations hotelieres base sur des donnees de reservation, avec approche interpretable pour aider les decisions operationnelles.',
     stack: ['Python', 'CatBoost', 'pandas', 'scikit-learn'],
-    status: 'shipped',
-    timeline: '2025',
-    role: 'ML Engineer',
-    github: 'https://github.com/katib-source/hotel-fraud-model',
-    metrics: [
-      { label: 'auc_roc', value: '0.95' },
-      { label: 'focus', value: 'high recall' },
-      { label: 'impact', value: 'risk triage' },
-    ],
+    status: 'Deploye',
+    metricLabel: 'AUC-ROC',
+    metricValue: '0.95',
+    link: 'https://github.com/katib-source/hotel-fraud-model',
+    linkLabel: 'Voir le projet',
+    featured: true,
   },
   {
-    id: 'reflexa-app',
-    title: 'Reflexa Mobile App',
-    subtitle: 'AI-powered cross-platform product',
-    description:
-      'React Native application integrating text analysis and behavior signal features with privacy-first API design.',
-    features: ['Cross-platform delivery', 'AI-assisted workflows', 'Privacy-aware architecture'],
-    stack: ['React Native', 'JavaScript', 'Node.js', 'REST'],
-    status: 'in-progress',
-    timeline: '2025 - present',
-    role: 'Full-Stack / AI Developer',
-    github: 'https://github.com/katib-source',
-    metrics: [
-      { label: 'platforms', value: 'android + ios' },
-      { label: 'cycle', value: 'full lifecycle' },
-    ],
-  },
-  {
-    id: 'azurescape',
+    id: 'project-azurescape',
     title: 'AzurEscape Booking Platform',
-    subtitle: 'Booking workflows with recommendation logic',
     description:
-      'Guided-tour platform with account management, reservation engine, and preference-based recommendations.',
-    stack: ['JavaScript', 'Node.js', 'Database'],
-    status: 'shipped',
-    timeline: '2024 - 2025',
-    role: 'Web/Data Developer',
-    github: 'https://github.com/katib-source/Riviera-Trails',
-    metrics: [
-      { label: 'scope', value: 'booking + users' },
-      { label: 'ai', value: 'recommendations' },
-    ],
+      'Plateforme de reservation avec gestion utilisateur et flux de reservation, concue pour une experience claire et fiable cote client.',
+    stack: ['React', 'Node.js', 'PostgreSQL', 'REST API'],
+    status: 'Deploye',
+    link: 'https://azurescape.fr',
+    linkLabel: 'Voir le projet',
+    featured: true,
   },
   {
-    id: 'mario-2d-engine',
-    title: '2D Mario Engine',
-    subtitle: 'Reusable platformer architecture',
+    id: 'project-reflexa',
+    title: 'Reflexa Mobile App',
     description:
-      'Entity-style architecture, collision system, level loop, and extensible mechanics for 2D gameplay systems.',
+      'Application mobile orientee usage reel, combinant interfaces React Native et services Node.js pour des fonctionnalites intelligentes.',
+    stack: ['React Native', 'Node.js'],
+    status: 'En cours',
+    link: 'https://github.com/katib-source',
+    linkLabel: 'Voir le projet',
+    featured: true,
+  },
+  {
+    id: 'project-takaful',
+    title: 'Takaful (Projet ESI)',
+    description:
+      'Projet pluridisciplinaire en equipe sur la conception applicative, la logique metier et l integration de donnees.',
+    stack: ['JavaScript/TypeScript', 'SQL', 'MongoDB'],
+    status: 'Deploye',
+    link: 'https://github.com/katib-source',
+    linkLabel: 'Voir le projet',
+  },
+  {
+    id: 'project-mario',
+    title: '2D Mario Engine',
+    description:
+      'Moteur 2D orientee architecture de jeu, collisions et boucle de rendu, pense pour experimentation et progression technique.',
     stack: ['Java', 'LibGDX', 'Game Loop'],
-    status: 'archived',
-    timeline: '2024',
-    role: 'Engine Developer',
-    github: 'https://github.com/katib-source/mario-2d-engine.git',
+    link: 'https://github.com/katib-source/mario-2d-engine.git',
+    linkLabel: 'Voir le projet',
   },
 ]
 
 export function ProjectsSection() {
-  const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null)
-
-  const featuredProjects = projectsData.slice(0, 3)
-  const otherProjects = projectsData.slice(3)
+  const featured = projects.filter((project) => project.featured)
+  const secondary = projects.filter((project) => !project.featured)
 
   return (
-    <>
-      <SectionShell id="projects" showGrid>
-        <div className="mb-8">
-          <SectionTag id="03" label="Projects" />
-        </div>
+    <SectionShell id="projects" className="bg-surface py-20 md:py-24" contentClassName="max-w-[1200px]">
+      <div className="mb-8">
+        <SectionHeader title="PROJETS" id="projects-heading" />
+      </div>
 
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-48px' }}
-        >
-          <BentoGrid gap="md" colsDesktop={12} className="md:grid-cols-12">
-            {featuredProjects.map((project, index) => (
-              <BentoGridItem
-                key={project.id}
-                colSpan={12}
-                colSpanMd={12}
-                colSpanLg={index === 0 ? 12 : index === 1 ? 4 : 8}
-              >
-                <BentoCard
-                  index={index}
-                  interactive
-                  fullHeight
-                  className="group min-w-0 cursor-pointer space-y-5"
-                  onClick={() => setSelectedProject(project)}
-                >
-                  <div className="flex items-center justify-between">
-                    <Meta prefix="#">{project.id}</Meta>
-                    <Meta prefix="#">featured</Meta>
-                  </div>
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: '-48px' }}
+        className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+      >
+        {featured.map((project, index) => (
+          <motion.div
+            key={project.id}
+            variants={fadeUp}
+            custom={index}
+            className={index === 0 ? 'md:col-span-2 lg:col-span-2' : ''}
+          >
+            <Card className="h-full bg-surface-white">
+              <article className="flex h-full flex-col gap-4">
+                <div className="flex items-start justify-between gap-3">
                   <div>
-                    <h3 className="text-xl font-medium text-zinc-100">{project.title}</h3>
-                    {project.subtitle && <Meta>{project.subtitle}</Meta>}
-                  </div>
-                  <p className="text-sm leading-relaxed text-zinc-400">{project.description}</p>
-                  <div className="flex flex-wrap gap-2">
-                    <Meta prefix="~">tech</Meta>
-                    {project.stack.map((tech) => (
-                      <span
-                        key={tech}
-                        className="border border-zinc-800 bg-zinc-900 px-2.5 py-1 font-mono text-[10px] text-zinc-300"
-                      >
-                        {tech}
+                    <h3 className="font-sans text-lg font-semibold text-primary decoration-primary underline-offset-4 hover:underline">
+                      {project.title}
+                    </h3>
+                    {project.status && (
+                      <span className="mt-2 inline-flex rounded-full border border-border bg-primary-light px-2.5 py-1 font-sans text-xs text-primary">
+                        {project.status}
                       </span>
-                    ))}
+                    )}
                   </div>
-                  <div className="flex items-center justify-between border-t border-zinc-800 pt-4">
-                    <Meta>{project.timeline ?? 'ongoing'}</Meta>
-                    <span className="inline-flex items-center gap-2 text-xs text-zinc-400 transition-colors group-hover:text-[#00FF9F]">
-                      open_spec
+
+                  {project.metricLabel && project.metricValue && (
+                    <div className="rounded-lg border border-border bg-primary-light px-3 py-2 text-right">
+                      <p className="font-sans text-[11px] uppercase tracking-[0.08em] text-text-muted">
+                        {project.metricLabel}
+                      </p>
+                      <p className="font-sans text-2xl font-bold text-primary">{project.metricValue}</p>
+                    </div>
+                  )}
+                </div>
+
+                {project.id === 'project-azurescape' && (
+                  <div className="rounded-lg border border-border bg-surface-card px-4 py-5">
+                    <p className="font-sans text-sm text-text-muted">Capture projet</p>
+                    <p className="mt-1 font-sans text-sm text-text-secondary">
+                      Apercu de la plateforme AzurEscape (mockup en attente d image finale).
+                    </p>
+                  </div>
+                )}
+
+                <p className="font-sans text-sm leading-relaxed text-text-secondary">{project.description}</p>
+
+                <div className="flex flex-wrap gap-2">
+                  {project.stack.map((item) => (
+                    <Badge key={`${project.id}-${item}`}>{item}</Badge>
+                  ))}
+                </div>
+
+                <div className="mt-auto pt-2">
+                  {project.link ? (
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 font-sans text-sm font-semibold text-primary hover:underline"
+                    >
+                      {project.linkLabel ?? 'Voir le projet'}
+                      <ArrowUpRight className="h-4 w-4" />
+                    </a>
+                  ) : (
+                    <span className="inline-flex items-center gap-1 font-sans text-sm font-semibold text-primary">
+                      Voir le projet
                       <ArrowUpRight className="h-4 w-4" />
                     </span>
-                  </div>
-                </BentoCard>
-              </BentoGridItem>
-            ))}
-          </BentoGrid>
-        </motion.div>
-
-        {otherProjects.length > 0 && (
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-48px' }}
-            className="mt-12"
-          >
-            <Meta prefix="#">additional</Meta>
-            <BentoGrid gap="md" colsDesktop={12} className="mt-4 md:grid-cols-12">
-              {otherProjects.map((project, index) => (
-                <BentoGridItem key={project.id} colSpan={12} colSpanMd={6} colSpanLg={4}>
-                  <motion.div variants={fadeUp} custom={index}>
-                    <BentoCard
-                      index={index + featuredProjects.length}
-                      interactive
-                      fullHeight
-                      className="group min-w-0 cursor-pointer space-y-4"
-                      onClick={() => setSelectedProject(project)}
-                    >
-                      <Meta prefix="#">{project.id}</Meta>
-                      <Meta prefix="~">tech</Meta>
-                      <h4 className="text-base font-medium text-zinc-100">{project.title}</h4>
-                      <p className="line-clamp-3 text-sm text-zinc-400">{project.description}</p>
-                      <div className="flex items-center justify-between border-t border-zinc-800 pt-3">
-                        <Meta>{project.status}</Meta>
-                        {project.github && (
-                          <a
-                            href={project.github}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={(event) => event.stopPropagation()}
-                            className="inline-flex items-center gap-1 text-zinc-500 hover:text-[#00FF9F]"
-                          >
-                            <Github className="h-4 w-4" />
-                          </a>
-                        )}
-                      </div>
-                    </BentoCard>
-                  </motion.div>
-                </BentoGridItem>
-              ))}
-            </BentoGrid>
+                  )}
+                </div>
+              </article>
+            </Card>
           </motion.div>
-        )}
-      </SectionShell>
+        ))}
 
-      <ProjectDetailModal project={selectedProject} onClose={() => setSelectedProject(null)} />
-    </>
+        {secondary.map((project, index) => (
+          <motion.div key={project.id} variants={fadeUp} custom={index + featured.length}>
+            <Card className="h-full bg-surface-white">
+              <article className="flex h-full flex-col gap-4">
+                <div className="flex items-start justify-between gap-3">
+                  <h3 className="font-sans text-base font-semibold text-primary decoration-primary underline-offset-4 hover:underline">
+                    {project.title}
+                  </h3>
+                  {project.status && (
+                    <span className="inline-flex rounded-full border border-border bg-primary-light px-2 py-1 font-sans text-[11px] text-primary">
+                      {project.status}
+                    </span>
+                  )}
+                </div>
+
+                <p className="font-sans text-sm leading-relaxed text-text-secondary">{project.description}</p>
+
+                <div className="flex flex-wrap gap-2">
+                  {project.stack.map((item) => (
+                    <Badge key={`${project.id}-${item}`}>{item}</Badge>
+                  ))}
+                </div>
+
+                <div className="mt-auto pt-1">
+                  {project.link ? (
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 font-sans text-sm font-semibold text-primary hover:underline"
+                    >
+                      {project.linkLabel ?? 'Voir le projet'}
+                      <ArrowUpRight className="h-4 w-4" />
+                    </a>
+                  ) : (
+                    <span className="inline-flex items-center gap-1 font-sans text-sm font-semibold text-primary">
+                      Voir le projet
+                      <ArrowUpRight className="h-4 w-4" />
+                    </span>
+                  )}
+                </div>
+              </article>
+            </Card>
+          </motion.div>
+        ))}
+      </motion.div>
+    </SectionShell>
   )
 }
