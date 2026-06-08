@@ -16,15 +16,15 @@ const technicalSkills = [
   },
   {
     label: 'Data/IA',
-    values: ['pandas', 'NumPy', 'scikit-learn', 'CatBoost', 'PyTorch'],
+    values: ['pandas', 'NumPy', 'scikit-learn', 'CatBoost', 'PyTorch', 'CamemBERT', 'KeyBERT'],
   },
   {
     label: 'Frameworks/Web',
-    values: ['React', 'Next.js', 'Node.js'],
+    values: ['React', 'Next.js', 'Node.js', 'FastAPI'],
   },
   {
     label: 'Outils',
-    values: ['Git', 'GitHub', 'Linux', 'Bash', 'Docker'],
+    values: ['Git', 'GitHub', 'Linux', 'Bash', 'Docker', 'Playwright'],
   },
   {
     label: 'Bases de donnees',

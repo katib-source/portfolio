@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   title: "Katib Kachi — Data Science & IA | Alternance",
   description:
     "Etudiant en L3 Informatique a l'Universite Cote d'Azur, je construis des solutions data et IA utiles, de la preparation des donnees jusqu'a la mise en oeuvre applicative.",
-  keywords: ["Data Science", "IA", "Machine Learning", "Universite Cote d'Azur", "Alternance", "Portfolio"],
+  keywords: ["Data Science", "IA", "Machine Learning", "NLP", "FastAPI", "Python", "Universite Cote d'Azur", "Alternance", "Portfolio"],
   authors: [{ name: "Katib Kachi" }],
   icons: {
     icon: "/icon.svg",
@@ -69,7 +69,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="fr" suppressHydrationWarning>
       <body
         className={`${display.variable} ${sans.variable} ${mono.variable} ${logo.variable} font-sans antialiased`}
       >

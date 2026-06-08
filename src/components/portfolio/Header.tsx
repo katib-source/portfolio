@@ -97,7 +97,7 @@ export function Header() {
               <motion.button
                 key={item.label}
                 onClick={() => scrollToSection(item.id, () => setIsMobileMenuOpen(false))}
-                aria-current={isActive ? 'true' : undefined}
+                aria-current={isActive ? 'page' : undefined}
                 className={cn(
                   'relative border-b-2 border-transparent pb-1 pt-1 font-sans text-sm transition-colors duration-300',
                   showSolidBg ? 'text-text-secondary' : 'text-text-primary',
@@ -150,7 +150,7 @@ export function Header() {
                 key={item.id}
                 type="button"
                 onClick={() => scrollToSection(item.id, () => setIsMobileMenuOpen(false))}
-                aria-current={isActive ? 'true' : undefined}
+                aria-current={isActive ? 'page' : undefined}
                 className={cn(
                   'block w-full px-6 py-4 text-left text-base border-b border-[--border] transition-colors',
                   isActive ? 'text-primary bg-[--primary-light]' : 'text-[--text-primary] active:bg-[--primary-light]'

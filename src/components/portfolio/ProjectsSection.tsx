@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, Github } from 'lucide-react'
 
 import { Badge } from '@/components/ui/Badge'
 import { Card } from '@/components/ui/Card'
@@ -17,12 +17,25 @@ type Project = {
   status?: 'Deploye' | 'En cours'
   link?: string
   linkLabel?: string
+  github?: string
   metricLabel?: string
   metricValue?: string
   featured?: boolean
 }
 
 const projects: Project[] = [
+  {
+    id: 'project-riviera-insight',
+    title: 'RivieraInsight',
+    description:
+      'NLP competitive intelligence tool for French Riviera tour operators. Analyzes TripAdvisor reviews using CamemBERT and KeyBERT. Built for AzurEscape.',
+    stack: ['Python', 'FastAPI', 'Next.js', 'CamemBERT', 'KeyBERT', 'Playwright'],
+    status: 'Deploye',
+    link: 'https://riviera-insight.vercel.app',
+    linkLabel: 'Live',
+    github: 'https://github.com/katib-source/riviera-insight',
+    featured: true,
+  },
   {
     id: 'project-ml-hotel',
     title: 'ML Hotel Cancellation Prediction',
@@ -127,15 +140,6 @@ export function ProjectsSection() {
                   )}
                 </div>
 
-                {project.id === 'project-azurescape' && (
-                  <div className="rounded-lg border border-border bg-surface-card px-4 py-5">
-                    <p className="font-sans text-sm text-text-muted">Capture projet</p>
-                    <p className="mt-1 font-sans text-sm text-text-secondary">
-                      Apercu de la plateforme AzurEscape (mockup en attente d image finale).
-                    </p>
-                  </div>
-                )}
-
                 <p className="font-sans text-sm leading-relaxed text-text-secondary">{project.description}</p>
 
                 <div className="flex flex-wrap gap-2">
@@ -144,7 +148,7 @@ export function ProjectsSection() {
                   ))}
                 </div>
 
-                <div className="mt-auto pt-2">
+                <div className="mt-auto flex flex-wrap items-center gap-4 pt-2">
                   {project.link ? (
                     <a
                       href={project.link}
@@ -160,6 +164,17 @@ export function ProjectsSection() {
                       Voir le projet
                       <ArrowUpRight className="h-4 w-4" />
                     </span>
+                  )}
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 font-sans text-sm font-semibold text-text-secondary hover:text-primary hover:underline"
+                    >
+                      GitHub
+                      <Github className="h-4 w-4" />
+                    </a>
                   )}
                 </div>
               </article>
@@ -190,7 +205,7 @@ export function ProjectsSection() {
                   ))}
                 </div>
 
-                <div className="mt-auto pt-1">
+                <div className="mt-auto flex flex-wrap items-center gap-4 pt-1">
                   {project.link ? (
                     <a
                       href={project.link}
@@ -206,6 +221,17 @@ export function ProjectsSection() {
                       Voir le projet
                       <ArrowUpRight className="h-4 w-4" />
                     </span>
+                  )}
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 font-sans text-sm font-semibold text-text-secondary hover:text-primary hover:underline"
+                    >
+                      GitHub
+                      <Github className="h-4 w-4" />
+                    </a>
                   )}
                 </div>
               </article>
