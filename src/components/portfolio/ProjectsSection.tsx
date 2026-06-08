@@ -28,7 +28,7 @@ const projects: Project[] = [
     id: 'project-riviera-insight',
     title: 'RivieraInsight',
     description:
-      'NLP competitive intelligence tool for French Riviera tour operators. Analyzes TripAdvisor reviews using CamemBERT and KeyBERT. Built for AzurEscape.',
+      'Outil d\'intelligence concurrentielle NLP pour les operateurs touristiques de la Cote d\'Azur. Analyse les avis TripAdvisor via CamemBERT et KeyBERT. Concu pour AzurEscape.',
     stack: ['Python', 'FastAPI', 'Next.js', 'CamemBERT', 'KeyBERT', 'Playwright'],
     status: 'Deploye',
     link: 'https://riviera-insight.vercel.app',
@@ -69,7 +69,6 @@ const projects: Project[] = [
     status: 'En cours',
     link: 'https://github.com/katib-source',
     linkLabel: 'Voir le projet',
-    featured: true,
   },
   {
     id: 'project-takaful',
@@ -91,6 +90,78 @@ const projects: Project[] = [
     linkLabel: 'Voir le projet',
   },
 ]
+
+function RivieraInsightPreview() {
+  return (
+    <div className="rounded-lg border border-border bg-surface p-4 space-y-3 text-xs font-sans">
+      <div className="flex items-center justify-between">
+        <span className="font-semibold text-text-primary uppercase tracking-[0.08em] text-[10px]">Analyse NLP — Exemple de sortie</span>
+        <span className="rounded-full bg-primary-light px-2 py-0.5 text-[10px] text-primary font-medium">TripAdvisor · Nice</span>
+      </div>
+
+      <div className="space-y-1">
+        <p className="text-[10px] uppercase tracking-[0.08em] text-text-muted font-semibold">Mots-cles dominants</p>
+        <div className="flex flex-wrap gap-1.5">
+          {['vue mer', 'emplacement', 'service', 'petit-dejeuner', 'proprete'].map((kw) => (
+            <span key={kw} className="rounded-full bg-primary-light px-2 py-0.5 text-primary">{kw}</span>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-3 gap-2">
+        {[
+          { label: 'Avis analyses', value: '1 240' },
+          { label: 'Sentiment positif', value: '74%' },
+          { label: 'Concurrents suivis', value: '8' },
+        ].map((stat) => (
+          <div key={stat.label} className="rounded-md border border-border bg-surface-white px-2 py-2 text-center">
+            <p className="text-base font-bold text-primary">{stat.value}</p>
+            <p className="text-[10px] text-text-muted leading-tight mt-0.5">{stat.label}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="rounded-md border border-border bg-surface-white px-3 py-2 flex items-center justify-between">
+        <span className="text-text-secondary">Hotel Beau Rivage <span className="text-text-muted">(concurrent #1)</span></span>
+        <span className="font-semibold text-primary">Score 4.3 / 5</span>
+      </div>
+    </div>
+  )
+}
+
+function ProjectLinks({ project }: { project: Project }) {
+  return (
+    <div className="mt-auto flex flex-wrap items-center gap-4 pt-2">
+      {project.link ? (
+        <a
+          href={project.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 font-sans text-sm font-semibold text-primary hover:underline"
+        >
+          {project.linkLabel ?? 'Voir le projet'}
+          <ArrowUpRight className="h-4 w-4" />
+        </a>
+      ) : (
+        <span className="inline-flex items-center gap-1 font-sans text-sm font-semibold text-primary">
+          Voir le projet
+          <ArrowUpRight className="h-4 w-4" />
+        </span>
+      )}
+      {project.github && (
+        <a
+          href={project.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 font-sans text-sm font-semibold text-primary hover:underline"
+        >
+          GitHub
+          <Github className="h-4 w-4" />
+        </a>
+      )}
+    </div>
+  )
+}
 
 export function ProjectsSection() {
   const featured = projects.filter((project) => project.featured)
@@ -140,6 +211,8 @@ export function ProjectsSection() {
                   )}
                 </div>
 
+                {project.id === 'project-riviera-insight' && <RivieraInsightPreview />}
+
                 <p className="font-sans text-sm leading-relaxed text-text-secondary">{project.description}</p>
 
                 <div className="flex flex-wrap gap-2">
@@ -148,35 +221,7 @@ export function ProjectsSection() {
                   ))}
                 </div>
 
-                <div className="mt-auto flex flex-wrap items-center gap-4 pt-2">
-                  {project.link ? (
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 font-sans text-sm font-semibold text-primary hover:underline"
-                    >
-                      {project.linkLabel ?? 'Voir le projet'}
-                      <ArrowUpRight className="h-4 w-4" />
-                    </a>
-                  ) : (
-                    <span className="inline-flex items-center gap-1 font-sans text-sm font-semibold text-primary">
-                      Voir le projet
-                      <ArrowUpRight className="h-4 w-4" />
-                    </span>
-                  )}
-                  {project.github && (
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 font-sans text-sm font-semibold text-text-secondary hover:text-primary hover:underline"
-                    >
-                      GitHub
-                      <Github className="h-4 w-4" />
-                    </a>
-                  )}
-                </div>
+                <ProjectLinks project={project} />
               </article>
             </Card>
           </motion.div>
@@ -205,35 +250,7 @@ export function ProjectsSection() {
                   ))}
                 </div>
 
-                <div className="mt-auto flex flex-wrap items-center gap-4 pt-1">
-                  {project.link ? (
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 font-sans text-sm font-semibold text-primary hover:underline"
-                    >
-                      {project.linkLabel ?? 'Voir le projet'}
-                      <ArrowUpRight className="h-4 w-4" />
-                    </a>
-                  ) : (
-                    <span className="inline-flex items-center gap-1 font-sans text-sm font-semibold text-primary">
-                      Voir le projet
-                      <ArrowUpRight className="h-4 w-4" />
-                    </span>
-                  )}
-                  {project.github && (
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 font-sans text-sm font-semibold text-text-secondary hover:text-primary hover:underline"
-                    >
-                      GitHub
-                      <Github className="h-4 w-4" />
-                    </a>
-                  )}
-                </div>
+                <ProjectLinks project={project} />
               </article>
             </Card>
           </motion.div>
