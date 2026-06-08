@@ -163,9 +163,53 @@ function ProjectLinks({ project }: { project: Project }) {
   )
 }
 
+function FeaturedCard({ project, index }: { project: Project; index: number }) {
+  return (
+    <motion.div key={project.id} variants={fadeUp} custom={index}>
+      <Card className="h-full ">
+        <article className="flex h-full flex-col gap-4">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <h3 className="font-sans text-lg font-semibold text-primary decoration-primary underline-offset-4 hover:underline">
+                {project.title}
+              </h3>
+              {project.status && (
+                <span className="mt-2 inline-flex rounded-full border border-border bg-primary-light px-2.5 py-1 font-sans text-xs text-primary">
+                  {project.status}
+                </span>
+              )}
+            </div>
+
+            {project.metricLabel && project.metricValue && (
+              <div className="rounded-lg border border-border bg-primary-light px-3 py-2 text-right">
+                <p className="font-sans text-[11px] uppercase tracking-[0.08em] text-text-muted">
+                  {project.metricLabel}
+                </p>
+                <p className="font-sans text-2xl font-bold text-primary">{project.metricValue}</p>
+              </div>
+            )}
+          </div>
+
+          {project.id === 'project-riviera-insight' && <RivieraInsightPreview />}
+
+          <p className="font-sans text-sm leading-relaxed text-text-secondary">{project.description}</p>
+
+          <div className="flex flex-wrap gap-2">
+            {project.stack.map((item) => (
+              <Badge key={`${project.id}-${item}`}>{item}</Badge>
+            ))}
+          </div>
+
+          <ProjectLinks project={project} />
+        </article>
+      </Card>
+    </motion.div>
+  )
+}
+
 export function ProjectsSection() {
-  const featured = projects.filter((project) => project.featured)
-  const secondary = projects.filter((project) => !project.featured)
+  const [riviera, ...rest] = projects.filter((p) => p.featured)
+  const secondary = projects.filter((p) => !p.featured)
 
   return (
     <SectionShell id="projects" className="bg-surface py-20 md:py-24" contentClassName="max-w-[1200px]">
@@ -178,83 +222,49 @@ export function ProjectsSection() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: '-48px' }}
-        className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+        className="space-y-6"
       >
-        {featured.map((project, index) => (
-          <motion.div
-            key={project.id}
-            variants={fadeUp}
-            custom={index}
-            className={index === 0 ? 'md:col-span-2 lg:col-span-2' : ''}
-          >
-            <Card className="h-full bg-surface-white">
-              <article className="flex h-full flex-col gap-4">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <h3 className="font-sans text-lg font-semibold text-primary decoration-primary underline-offset-4 hover:underline">
+        {/* RivieraInsight — full width */}
+        <FeaturedCard project={riviera} index={0} />
+
+        {/* ML Hotel + AzurEscape — side by side */}
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          {rest.map((project, index) => (
+            <FeaturedCard key={project.id} project={project} index={index + 1} />
+          ))}
+        </div>
+
+        {/* Secondary projects — 3-col grid */}
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {secondary.map((project, index) => (
+            <motion.div key={project.id} variants={fadeUp} custom={index + 3}>
+              <Card className="h-full ">
+                <article className="flex h-full flex-col gap-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <h3 className="font-sans text-base font-semibold text-primary decoration-primary underline-offset-4 hover:underline">
                       {project.title}
                     </h3>
                     {project.status && (
-                      <span className="mt-2 inline-flex rounded-full border border-border bg-primary-light px-2.5 py-1 font-sans text-xs text-primary">
+                      <span className="inline-flex rounded-full border border-border bg-primary-light px-2 py-1 font-sans text-[11px] text-primary">
                         {project.status}
                       </span>
                     )}
                   </div>
 
-                  {project.metricLabel && project.metricValue && (
-                    <div className="rounded-lg border border-border bg-primary-light px-3 py-2 text-right">
-                      <p className="font-sans text-[11px] uppercase tracking-[0.08em] text-text-muted">
-                        {project.metricLabel}
-                      </p>
-                      <p className="font-sans text-2xl font-bold text-primary">{project.metricValue}</p>
-                    </div>
-                  )}
-                </div>
+                  <p className="font-sans text-sm leading-relaxed text-text-secondary">{project.description}</p>
 
-                {project.id === 'project-riviera-insight' && <RivieraInsightPreview />}
+                  <div className="flex flex-wrap gap-2">
+                    {project.stack.map((item) => (
+                      <Badge key={`${project.id}-${item}`}>{item}</Badge>
+                    ))}
+                  </div>
 
-                <p className="font-sans text-sm leading-relaxed text-text-secondary">{project.description}</p>
-
-                <div className="flex flex-wrap gap-2">
-                  {project.stack.map((item) => (
-                    <Badge key={`${project.id}-${item}`}>{item}</Badge>
-                  ))}
-                </div>
-
-                <ProjectLinks project={project} />
-              </article>
-            </Card>
-          </motion.div>
-        ))}
-
-        {secondary.map((project, index) => (
-          <motion.div key={project.id} variants={fadeUp} custom={index + featured.length}>
-            <Card className="h-full bg-surface-white">
-              <article className="flex h-full flex-col gap-4">
-                <div className="flex items-start justify-between gap-3">
-                  <h3 className="font-sans text-base font-semibold text-primary decoration-primary underline-offset-4 hover:underline">
-                    {project.title}
-                  </h3>
-                  {project.status && (
-                    <span className="inline-flex rounded-full border border-border bg-primary-light px-2 py-1 font-sans text-[11px] text-primary">
-                      {project.status}
-                    </span>
-                  )}
-                </div>
-
-                <p className="font-sans text-sm leading-relaxed text-text-secondary">{project.description}</p>
-
-                <div className="flex flex-wrap gap-2">
-                  {project.stack.map((item) => (
-                    <Badge key={`${project.id}-${item}`}>{item}</Badge>
-                  ))}
-                </div>
-
-                <ProjectLinks project={project} />
-              </article>
-            </Card>
-          </motion.div>
-        ))}
+                  <ProjectLinks project={project} />
+                </article>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
       </motion.div>
     </SectionShell>
   )

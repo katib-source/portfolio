@@ -17,7 +17,7 @@ export function Card({ className, children }: CardProps) {
       whileInView="visible"
       viewport={{ once: true, margin: "-48px" }}
       className={cn(
-        "rounded-lg border border-[--border] bg-[--surface-card] p-6 transition-shadow duration-300 hover:shadow-sm",
+        "card-elevated rounded-lg border border-[--border] p-6",
         className,
       )}
     >
