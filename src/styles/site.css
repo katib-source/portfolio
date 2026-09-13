@@ -259,15 +259,6 @@
   gap: 18px;
 }
 
-.card--slot {
-  border: 1.5px dashed var(--blue);
-  opacity: 0.45;
-}
-
-.card--slot .card-title {
-  font-size: 28px;
-}
-
 /* ---- case study ---- */
 
 .pill--back {
