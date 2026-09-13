@@ -1,0 +1,239 @@
+:root {
+  --cream: #fdf7e4;
+  --blue: #1f2ad4;
+  --tint: #cdd1f7;
+  --tint-2: #8f97f0;
+  --tint-3: #7b83ea;
+  --label: #5a61c9;
+  --coral: #ee5b43;
+  --yellow: #ffd84d;
+  --lilac: #c9b7f0;
+  --mint: #bfd8c9;
+  --soft-coral: #f7c9bd;
+  --peri: #d6dbf7;
+  --sand: #e6e0cd;
+  --sand-shadow: #d9d3bd;
+
+  --f-sans: var(--font-archivo), "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: var(--font-jetbrains), "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --f-serif: var(--font-newsreader), "Newsreader", Georgia, "Times New Roman", serif;
+
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--blue);
+  font-family: var(--f-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--blue);
+}
+
+a:hover {
+  color: var(--coral);
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: var(--f-sans);
+}
+
+img {
+  max-width: 100%;
+}
+
+:focus-visible {
+  outline: 2px solid var(--coral);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--yellow);
+  color: var(--blue);
+}
+
+/* ---- shared atoms ---- */
+
+.wordmark {
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: -0.03em;
+  text-decoration: none;
+  color: var(--blue);
+}
+
+.wordmark:hover {
+  color: var(--blue);
+}
+
+.star,
+.stop,
+.dot {
+  color: var(--coral);
+}
+
+.mono-label {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 400;
+}
+
+.bg-lilac { background: var(--lilac); }
+.bg-yellow { background: var(--yellow); }
+.bg-mint { background: var(--mint); }
+.bg-coral { background: var(--soft-coral); }
+.bg-periwinkle { background: var(--peri); }
+.bg-sand { background: var(--sand); }
+
+.btn-primary {
+  display: inline-block;
+  background: var(--blue);
+  color: var(--cream);
+  border: none;
+  border-radius: 4px;
+  padding: 14px 22px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: normal;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 var(--coral);
+}
+
+.btn-primary:hover {
+  color: var(--cream);
+}
+
+.btn-primary--sm {
+  font-size: 12.5px;
+  padding: 12px 20px;
+}
+
+.pill {
+  display: inline-block;
+  border: 1.5px solid var(--blue);
+  border-radius: 40px;
+  padding: 10px 18px;
+  background: transparent;
+  color: var(--blue);
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: normal;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.pill:hover {
+  color: var(--coral);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+/* ---- project card (portfolio grid + admin live preview) ---- */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 212px;
+  padding: 26px;
+  border-radius: 16px;
+  color: var(--blue);
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+a.card {
+  cursor: pointer;
+}
+
+a.card:hover {
+  color: var(--blue);
+  transform: translateY(-5px) rotate(-0.6deg);
+  box-shadow: 7px 9px 0 rgba(31, 42, 212, 0.2);
+}
+
+a.card:focus-visible {
+  outline-offset: 4px;
+}
+
+.card-meta {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  margin-bottom: 10px;
+}
+
+.card-title {
+  margin: 0;
+  font-weight: 900;
+  font-size: clamp(24px, 3vw, 30px);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.card-desc {
+  margin: 10px 0 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  font-weight: 500;
+}
+
+.card-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.card-stack {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  opacity: 0.75;
+}
+
+.card-badge {
+  background: var(--blue);
+  color: var(--cream);
+  border-radius: 30px;
+  padding: 7px 14px;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
