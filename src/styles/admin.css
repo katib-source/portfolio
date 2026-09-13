@@ -394,3 +394,35 @@ textarea.input {
     padding: 20px;
   }
 }
+
+/* ---- import ---- */
+
+.pill[aria-expanded="true"] {
+  background: var(--blue);
+  color: var(--cream);
+}
+
+.import {
+  margin: 0 0 24px;
+  padding: 0 0 24px;
+  border-bottom: 1.5px dashed var(--tint);
+}
+
+.import-input {
+  font-family: var(--f-mono);
+  font-size: 12px;
+}
+
+.import-keys {
+  margin: 8px 0 0;
+  font-family: var(--f-mono);
+  font-size: 9.5px;
+  color: var(--tint-3);
+  overflow-wrap: anywhere;
+}
+
+.import-note {
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  color: var(--label);
+}

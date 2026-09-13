@@ -1,9 +1,10 @@
 "use client";
 
-import { Fragment, useState, useTransition } from "react";
+import { Fragment, useEffect, useRef, useState, useTransition } from "react";
 import { logout, saveCerts, saveProjects, saveSettings, type SaveResult } from "@/app/admin/actions";
 import { ProjectCard } from "@/components/ProjectCard";
 import { formatStack, isSafeHref, pad2, slugify, uniqueSlug } from "@/lib/format";
+import { findProject, mergeProjects, readProjects, type ImportedProject } from "@/lib/import";
 import {
   COLORS,
   STATUSES,
@@ -161,9 +162,74 @@ export function AdminApp({ initial, storageReady }: { initial: SiteContent; stor
     );
   }
 
+  // ---- import ----
+
+  const [importOpen, setImportOpen] = useState(false);
+  const [importText, setImportText] = useState("");
+  const [importNote, setImportNote] = useState<Note>({ text: "", bad: false });
+  const importRef = useRef<HTMLTextAreaElement>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (importOpen) importRef.current?.focus();
+  }, [importOpen]);
+
+  /** One project fills the form for review; several are saved straight away after a confirm. */
+  function importProjects(text: string) {
+    if (!text.trim()) return setImportNote({ text: "paste a project or a projects.json first", bad: true });
+    let incoming: ImportedProject[];
+    try {
+      incoming = readProjects(text, projects.length);
+    } catch (err) {
+      return setImportNote({ text: (err as Error).message, bad: true });
+    }
+    const notes = incoming.flatMap((p) => p.notes);
+
+    if (incoming.length === 1) {
+      const { project, hasColor } = incoming[0];
+      const i = findProject(projects, project);
+      setDraft(
+        i >= 0 ? { ...project, slug: projects[i].slug, color: hasColor ? project.color : projects[i].color } : project,
+      );
+      setEditing(i);
+      setError("");
+      setImportText("");
+      const loaded =
+        i >= 0
+          ? `loaded — “${projects[i].title}” already exists, so saving updates it`
+          : "loaded into the form — check the preview, then add it";
+      setImportNote({ text: [loaded, ...notes].join(" · "), bad: false });
+      return;
+    }
+
+    const { list, added, updated } = mergeProjects(projects, incoming);
+    const summary = [added && `${added} new`, updated && `${updated} updated`].filter(Boolean).join(", ");
+    if (!window.confirm(`Import ${incoming.length} projects (${summary})?`)) return;
+    run(
+      () => saveProjects(list),
+      () => {
+        setProjects(list);
+        resetForm();
+        setImportText("");
+        setImportNote({ text: [`imported · ${summary}`, ...notes].join(" · "), bad: false });
+      },
+      (msg) => {
+        if (msg) setImportNote({ text: msg, bad: true });
+      },
+    );
+  }
+
+  async function importFile(file: File | undefined) {
+    if (!file) return;
+    if (file.size > 1_000_000) return setImportNote({ text: "that file is over 1 MB — is it the right one?", bad: true });
+    const text = await file.text();
+    setImportText(text);
+    importProjects(text);
+  }
+
   // ---- certifications ----
 
-  const commitCerts = (next: Certification[], after?: () => void) =>
+  const commitCerts =(next: Certification[], after?: () => void) =>
     run(
       () => saveCerts(next),
       () => {
@@ -241,6 +307,15 @@ export function AdminApp({ initial, storageReady }: { initial: SiteContent; stor
           <span className={note.bad ? "saved-note saved-note--bad" : "saved-note"} role="status">
             {pending ? "saving…" : note.text}
           </span>
+          <button
+            type="button"
+            className="pill"
+            aria-expanded={importOpen}
+            aria-controls="import-panel"
+            onClick={() => setImportOpen((open) => !open)}
+          >
+            Import JSON ↑
+          </button>
           <button type="button" className="pill" onClick={() => download("projects.json", projects)}>
             Export projects.json ↓
           </button>
@@ -262,6 +337,54 @@ export function AdminApp({ initial, storageReady }: { initial: SiteContent; stor
           <h1 id="project-form-title" className="mono-label panel-title">
             {editing >= 0 ? `EDITING — ${projects[editing]?.title ?? ""}` : "NEW PROJECT"}
           </h1>
+
+          <div id="import-panel" className="import" hidden={!importOpen}>
+            <h2 className="mono-label panel-kicker">IMPORT JSON</h2>
+            <p className="panel-note">paste one project to fill the form, or a whole projects.json to add them all at once.</p>
+            <textarea
+              ref={importRef}
+              className="input import-input"
+              rows={8}
+              spellCheck={false}
+              aria-label="Project JSON"
+              value={importText}
+              onChange={(e) => {
+                setImportText(e.target.value);
+                setImportNote({ text: "", bad: false });
+              }}
+              placeholder={'{\n  "name": "AI Project Reviewer",\n  "category": "AI / Developer Tools",\n  "description": "…",\n  "caseStudy": { "problemEn": "…", "problemFr": "…" }\n}'}
+            />
+            <p className="import-keys">
+              name · category · status · description · descriptionFr · stack · badge · link · cardColour · caseStudy —
+              or an exported projects.json
+            </p>
+            <div className="form-actions form-actions--tight">
+              <button
+                type="button"
+                className="btn-primary btn-primary--sm"
+                onClick={() => importProjects(importText)}
+                disabled={pending}
+              >
+                Import ↗
+              </button>
+              <button type="button" className="btn-ghost" onClick={() => fileRef.current?.click()}>
+                Choose a file…
+              </button>
+              <input
+                ref={fileRef}
+                type="file"
+                accept=".json,application/json"
+                hidden
+                onChange={(e) => {
+                  importFile(e.target.files?.[0]);
+                  e.target.value = "";
+                }}
+              />
+              <span className={importNote.bad ? "form-error" : "import-note"} role="status">
+                {importNote.text}
+              </span>
+            </div>
+          </div>
 
           <div className="form-grid">
             <Field label="Project name" full>
