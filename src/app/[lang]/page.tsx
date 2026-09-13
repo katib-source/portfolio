@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { ProjectCard } from "@/components/ProjectCard";
 import { getDictionary } from "@/content/dictionary";
 import { getContent } from "@/lib/content";
-import { formatStack, pad2, projectMeta } from "@/lib/format";
+import { formatStack, projectMeta } from "@/lib/format";
 import { isLocale } from "@/lib/types";
 
 export default async function HomePage({ params }: { params: Promise<{ lang: string }> }) {
@@ -60,18 +60,6 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
             color={p.color}
           />
         ))}
-        {projects.length < 7 && (
-          <div className="card card--slot" aria-hidden="true">
-            <div>
-              <div className="card-meta">
-                {pad2(projects.length + 1)} · {t.slot_meta}
-              </div>
-              <div className="card-title">{t.slot_title}</div>
-              <p className="card-desc">{t.slot_desc}</p>
-            </div>
-            <span className="card-stack">STACK · STACK</span>
-          </div>
-        )}
       </div>
     </main>
   );
