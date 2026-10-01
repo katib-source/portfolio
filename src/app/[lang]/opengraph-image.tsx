@@ -4,7 +4,7 @@ import { isLocale } from "@/lib/types";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = "Katib Kachi — Data Science & AI portfolio";
+export const alt = "Katib Kachi | Data Science & AI portfolio";
 
 const SWATCHES = ["#c9b7f0", "#ffd84d", "#bfd8c9", "#f7c9bd", "#d6dbf7", "#e6e0cd"];
 

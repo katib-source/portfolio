@@ -1,8 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { connection } from "next/server";
 import { fontVariables } from "@/app/fonts";
 import { AboutBand } from "@/components/AboutBand";
+import { RevealObserver } from "@/components/RevealObserver";
 import { SiteHeader, type HeaderCert } from "@/components/SiteHeader";
 import { getDictionary } from "@/content/dictionary";
 import { getContent } from "@/lib/content";
@@ -41,6 +42,14 @@ export async function generateMetadata({ params }: Omit<Props, "children">): Pro
   };
 }
 
+export const viewport: Viewport = {
+  colorScheme: "light dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fdf7e4" },
+    { media: "(prefers-color-scheme: dark)", color: "#0c0f2e" },
+  ],
+};
+
 export default async function SiteLayout({ children, params }: Props) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
@@ -55,24 +64,23 @@ export default async function SiteLayout({ children, params }: Props) {
   });
 
   return (
-    <html lang={lang} className={fontVariables}>
+    <html lang={lang} className={`site ${fontVariables}`}>
       <body>
-        <div className="page">
-          <SiteHeader
-            lang={lang}
-            certs={headerCerts}
-            labels={{
-              projects: t.nav_projects,
-              about: t.nav_about,
-              talk: t.talk,
-              certsBtn: t.certs_btn,
-              certs: t.certs,
-              close: t.close,
-            }}
-          />
-          {children}
-        </div>
+        <SiteHeader
+          lang={lang}
+          certs={headerCerts}
+          labels={{
+            projects: t.nav_projects,
+            about: t.nav_about,
+            talk: t.talk,
+            certsBtn: t.certs_btn,
+            certs: t.certs,
+            close: t.close,
+          }}
+        />
+        <div className="page">{children}</div>
         <AboutBand t={t} />
+        <RevealObserver />
       </body>
     </html>
   );

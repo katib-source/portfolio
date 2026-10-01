@@ -4,10 +4,10 @@ import { CONTACT } from "@/lib/site";
 export function AboutBand({ t }: { t: Dictionary }) {
   return (
     <div id="about" className="about">
-      <section className="about-inner" aria-labelledby="about-heading">
+      <section className="about-inner" aria-labelledby="about-heading" data-reveal>
         <div className="portrait">
           {/* eslint-disable-next-line @next/next/no-img-element -- pre-sized 2× asset, keeps CSP free of inline styles */}
-          <img className="portrait-img" src="/katib-portrait.jpg" alt="Katib Kachi" width={168} height={168} />
+          <img className="portrait-img" src="/katib-portrait.jpg" alt="Katib Kachi" width={240} height={240} />
           <div className="say-hi" aria-hidden="true">
             SAY HI
           </div>

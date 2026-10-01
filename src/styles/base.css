@@ -18,7 +18,36 @@
   --f-mono: var(--font-jetbrains), "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --f-serif: var(--font-newsreader), "Newsreader", Georgia, "Times New Roman", serif;
 
+  /* Semantic tokens. The admin keeps these light values; the public site
+     (html.site) swaps them for dark mode below. */
+  --bg: var(--cream);
+  --fg: var(--blue);
+  --fg-soft: var(--label);
+  --surface: #fff;
+  --surface-shadow: var(--sand-shadow);
+  --line: rgb(31 42 212 / 0.16);
+  --btn-bg: var(--blue);
+  --btn-fg: var(--cream);
+  --on-tone: var(--blue);
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-swift: cubic-bezier(0.32, 0.72, 0, 1);
+
   color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  html.site {
+    --bg: #0c0f2e;
+    --fg: #fdf7e4;
+    --fg-soft: #b4b9f4;
+    --surface: #161a46;
+    --surface-shadow: #04061c;
+    --line: rgb(253 247 228 / 0.14);
+    --btn-bg: #fdf7e4;
+    --btn-fg: #1f2ad4;
+    color-scheme: dark;
+  }
 }
 
 *,
@@ -40,14 +69,14 @@ html {
 
 body {
   margin: 0;
-  background: var(--cream);
-  color: var(--blue);
+  background: var(--bg);
+  color: var(--fg);
   font-family: var(--f-sans);
   -webkit-font-smoothing: antialiased;
 }
 
 a {
-  color: var(--blue);
+  color: var(--fg);
 }
 
 a:hover {
@@ -82,11 +111,11 @@ img {
   font-size: 22px;
   letter-spacing: -0.03em;
   text-decoration: none;
-  color: var(--blue);
+  color: var(--fg);
 }
 
 .wordmark:hover {
-  color: var(--blue);
+  color: var(--fg);
 }
 
 .star,
@@ -111,8 +140,8 @@ img {
 
 .btn-primary {
   display: inline-block;
-  background: var(--blue);
-  color: var(--cream);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
   border: none;
   border-radius: 4px;
   padding: 14px 22px;
@@ -125,7 +154,29 @@ img {
 }
 
 .btn-primary:hover {
-  color: var(--cream);
+  color: var(--btn-fg);
+}
+
+/* Press feedback: the hard shadow is the button's "depth"; hover lifts it, press sinks it. */
+@media (prefers-reduced-motion: no-preference) {
+  .btn-primary {
+    transition: transform 180ms var(--ease-out), box-shadow 180ms var(--ease-out);
+  }
+
+  .btn-primary:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--coral);
+  }
+
+  .btn-primary:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--coral);
+    transition-duration: 80ms;
+  }
+
+  .pill:active {
+    transform: scale(0.97);
+  }
 }
 
 .btn-primary--sm {
@@ -135,11 +186,12 @@ img {
 
 .pill {
   display: inline-block;
-  border: 1.5px solid var(--blue);
+  border: 1.5px solid var(--fg);
   border-radius: 40px;
   padding: 10px 18px;
   background: transparent;
-  color: var(--blue);
+  color: var(--fg);
+  transition: color 160ms var(--ease-out), transform 120ms var(--ease-out);
   font-size: 12.5px;
   font-weight: 600;
   line-height: normal;
@@ -234,6 +286,20 @@ a.card:focus-visible {
   *,
   *::before,
   *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

@@ -32,20 +32,20 @@ export function SiteHeader({ lang, labels, certs }: { lang: Locale; labels: Labe
   }, [open]);
 
   return (
-    <>
+    <div className="masthead">
       <header className="header">
-        <Link href={`/${lang}`} className="wordmark" aria-label="katib — home">
+        <Link href={`/${lang}`} className="wordmark" aria-label="katib, home">
           katib<span className="star">*</span>
         </Link>
         <nav className="nav" aria-label="Main">
           <Link className="nav-link" href={`/${lang}#projects`}>
-            {labels.projects} <sup className="nav-idx">01</sup>
+            {labels.projects}
           </Link>
           <a className="nav-link" href="#about">
-            {labels.about} <sup className="nav-idx">02</sup>
+            {labels.about}
           </a>
           <a className="nav-link" href={CONTACT.cv} target="_blank" rel="noopener">
-            CV <sup className="nav-idx">03</sup>
+            CV
           </a>
           {certs.length > 0 && (
             <button
@@ -118,6 +118,6 @@ export function SiteHeader({ lang, labels, certs }: { lang: Locale; labels: Labe
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

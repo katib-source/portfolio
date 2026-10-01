@@ -13,6 +13,20 @@ export function formatStack(stack: string): string {
     .toUpperCase();
 }
 
+export function splitStack(stack: string): string[] {
+  return stack
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+/** Every distinct stack item across projects, in order of first appearance. */
+export function collectStack(projects: Pick<Project, "stack">[]): string[] {
+  const seen = new Map<string, string>();
+  for (const p of projects) for (const item of splitStack(p.stack)) if (!seen.has(item.toLowerCase())) seen.set(item.toLowerCase(), item);
+  return [...seen.values()];
+}
+
 export function projectMeta(index: number, tag: string, status: string): string {
   return [pad2(index + 1), tag.toUpperCase(), status].filter(Boolean).join(" · ");
 }
