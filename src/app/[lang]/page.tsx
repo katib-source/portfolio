@@ -1,8 +1,13 @@
 import { notFound } from "next/navigation";
-import { ProjectCard } from "@/components/ProjectCard";
+import { Denoise } from "@/components/Denoise";
+import { FeaturedProject } from "@/components/FeaturedProject";
+import { SignalPlot } from "@/components/SignalPlot";
+import { Toolbox } from "@/components/Toolbox";
+import { WorkIndex } from "@/components/WorkIndex";
 import { getDictionary } from "@/content/dictionary";
 import { getContent } from "@/lib/content";
-import { formatStack, projectMeta } from "@/lib/format";
+import { collectStack } from "@/lib/format";
+import { CONTACT } from "@/lib/site";
 import { isLocale } from "@/lib/types";
 
 export default async function HomePage({ params }: { params: Promise<{ lang: string }> }) {
@@ -11,56 +16,47 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
 
   const t = getDictionary(lang);
   const { projects, settings } = await getContent();
+  const [featured, ...rest] = projects;
+  const tools = collectStack(projects);
+  const now = settings.now[lang] || settings.now.en;
 
   return (
-    <main>
-      <p className="eyebrow">
-        <span className="dot" aria-hidden="true">
-          ●
-        </span>
-        &nbsp;&nbsp;{t.eyebrow}
-      </p>
-      <h1 className="hero-title">
-        {t.head1}
-        <br />
-        {t.head2}
-        <span className="stop">.</span>
-      </h1>
-
-      <div className="hero-row">
-        <p className="quip">{t.quip}</p>
-        <div className="hero-cta">
+    <main className="home">
+      <section className="hero" aria-labelledby="hero-title">
+        <div className="hero-copy">
+          <p className="eyebrow">{t.eyebrow}</p>
+          <h1 id="hero-title" className="hero-title">
+            <Denoise lines={[t.head1, t.head2]} stop />
+          </h1>
+          <p className="quip">{t.quip}</p>
           <p className="hero-sub">{t.sub}</p>
-          <a className="btn-primary" href="#projects">
-            {t.cta} ↗
-          </a>
+          <div className="hero-ctas">
+            <a className="btn-primary" href="#projects">
+              {t.cta} ↓
+            </a>
+            <a className="pill" href={`mailto:${CONTACT.email}`}>
+              {t.talk} ↗
+            </a>
+          </div>
         </div>
+        <SignalPlot
+          labels={{ label: t.plot_label, hint: t.plot_hint, noise: t.plot_noise, clean: t.plot_clean }}
+        />
+      </section>
+
+      {now && (
+        <p className="now">
+          <span className="now-chip">{t.now_label}</span>
+          <span className="now-text">{now}</span>
+        </p>
+      )}
+
+      <div id="projects" className="projects">
+        {featured && <FeaturedProject project={featured} lang={lang} t={t} />}
+        {rest.length > 0 && <WorkIndex projects={rest} offset={1} lang={lang} t={t} />}
       </div>
 
-      <div className="now">
-        <span className="now-chip">{t.now_label}</span>
-        <span className="now-text">{settings.now[lang] || settings.now.en}</span>
-      </div>
-
-      <p id="projects" className="peek">
-        {t.peek}
-      </p>
-
-      <div className="grid">
-        {projects.map((p, i) => (
-          <ProjectCard
-            key={p.slug}
-            href={`/${lang}/projects/${p.slug}`}
-            titleAs="h2"
-            meta={projectMeta(i, p.tag, t.status[p.status])}
-            title={p.title}
-            desc={p.desc[lang] || p.desc.en}
-            stack={formatStack(p.stack)}
-            badge={p.badge}
-            color={p.color}
-          />
-        ))}
-      </div>
+      {tools.length >= 4 && <Toolbox title={t.toolbox_title} items={tools} />}
     </main>
   );
 }
