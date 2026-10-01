@@ -8,11 +8,14 @@ export function FeaturedProject({ project, lang, t }: { project: Project; lang: 
   const source = project.blocks[lang].some(Boolean) ? project.blocks[lang] : project.blocks.en;
   const steps = source.map((body, i) => ({ body, label: t.labels[i] })).filter((s) => s.body);
   const link = isSafeHref(project.link) ? project.link : "";
+  const longestWord = Math.max(0, ...project.badge.split(/\s+/).map((w) => w.length));
+  const longBadge = longestWord > 7 || project.badge.length > 16;
+  const fit = longestWord <= 8 ? "w8" : longestWord <= 10 ? "w10" : longestWord <= 12 ? "w12" : longestWord <= 15 ? "w15" : "wmax";
   const meta = [project.tag.toUpperCase(), t.status[project.status]].filter(Boolean).join(" · ");
 
   return (
     <section className={`feature tone-${project.color}`} aria-labelledby="feature-title" data-reveal>
-      <div className="feature-top">
+      <div className={longBadge ? "feature-top feature-top--long" : "feature-top"}>
         <div className="feature-intro">
           <p className="mono-label feature-meta">{meta}</p>
           <h2 id="feature-title" className="feature-title">
@@ -20,7 +23,14 @@ export function FeaturedProject({ project, lang, t }: { project: Project; lang: 
           </h2>
           <p className="feature-desc">{project.desc[lang] || project.desc.en}</p>
         </div>
-        {project.badge && <p className="feature-stat">{project.badge}</p>}
+        {project.badge &&
+          (longBadge ? (
+            <div className="feature-stat-box">
+              <p className={`feature-stat feature-stat--long feature-stat--${fit}`}>{project.badge}</p>
+            </div>
+          ) : (
+            <p className="feature-stat">{project.badge}</p>
+          ))}
       </div>
 
       {steps.length > 0 && (

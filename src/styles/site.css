@@ -587,6 +587,7 @@ html.site body {
 
 .feature-title {
   margin: 0;
+  overflow-wrap: break-word;
   font-weight: 900;
   font-size: clamp(42px, 7vw, 96px);
   letter-spacing: -0.05em;
@@ -610,6 +611,30 @@ html.site body {
   letter-spacing: -0.045em;
   line-height: 0.9;
 }
+
+/* Wordier badges ("M1 ARCHITECTURE PROJECT") get a fixed share of the panel, and the
+   type is sized from that width by the longest word, so a whole word always fits. */
+.feature-top--long {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 38%);
+}
+
+.feature-stat-box {
+  container-type: inline-size;
+}
+
+.feature-stat--long {
+  max-width: none;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+  line-height: 0.95;
+  font-size: min(52px, var(--stat-fit));
+}
+
+.feature-stat--w8 { --stat-fit: 17cqi; }
+.feature-stat--w10 { --stat-fit: 13.6cqi; }
+.feature-stat--w12 { --stat-fit: 11.3cqi; }
+.feature-stat--w15 { --stat-fit: 9cqi; }
+.feature-stat--wmax { --stat-fit: 6.8cqi; }
 
 .pipeline {
   position: relative;
@@ -733,7 +758,7 @@ html.site body {
   position: relative;
   isolation: isolate;
   display: grid;
-  grid-template-columns: 40px minmax(0, 1fr) minmax(0, 220px) 128px 24px;
+  grid-template-columns: 40px minmax(0, 1fr) minmax(0, 220px) auto 24px;
   gap: 24px;
   align-items: center;
   padding: 28px 18px;
@@ -1021,6 +1046,8 @@ html.site body {
   font-size: clamp(26px, 3vw, 40px);
   letter-spacing: -0.04em;
   line-height: 1;
+  max-width: 100%;
+  overflow-wrap: anywhere;
   transform: rotate(-2deg);
 }
 
@@ -1404,7 +1431,8 @@ html.site body {
 }
 
 @media (max-width: 760px) {
-  .feature-top {
+  .feature-top,
+  .feature-top--long {
     grid-template-columns: minmax(0, 1fr);
   }
 
